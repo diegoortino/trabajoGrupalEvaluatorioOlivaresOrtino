@@ -1,22 +1,22 @@
 import * as readlineSync from "readline-sync";
 
-interface IJuego {
-    jugar(apuesta: number, parametroAdicional?: any): string;
-    apostarTodo(saldo: number, parametroAdicional?: any): string;
+export interface IJuego {
+    jugar(apuesta: number, parametroAdicional?: any): {mensaje:string, nuevoSaldo:number};
+    apostarTodo(saldo: number, parametroAdicional?: any): {mensaje:string, nuevoSaldo:number};
 }
 
-abstract class Juego implements IJuego{
+export abstract class Juego implements IJuego{
     protected nombreDelJuego:string;
 
     constructor(nombreDelJuego:string){
         this.nombreDelJuego = nombreDelJuego;
     }
 
-    abstract jugar(apuesta: number, parametroAdicional?: any): string;
-    abstract apostarTodo(saldo: number, parametroAdicional?: any): string;
+    abstract jugar(apuesta: number, parametroAdicional?: any): {mensaje:string, nuevoSaldo:number};
+    abstract apostarTodo(saldo: number, parametroAdicional?: any): {mensaje:string, nuevoSaldo:number};
 }
 
-abstract class Tragamonedas extends Juego {
+export abstract class Tragamonedas extends Juego {
     protected versionDelJuego: string;
     protected apuestaMinima: number;
     protected tipoDeRodillo: string;
@@ -27,56 +27,56 @@ abstract class Tragamonedas extends Juego {
         this.apuestaMinima = apuestaMinima;
         this.tipoDeRodillo = tipoDeRodillo;
     }
-    abstract jugar(apuesta: number): string;
-    abstract apostarTodo(saldo: number): string;
+    abstract jugar(apuesta: number): {mensaje:string, nuevoSaldo:number};
+    abstract apostarTodo(saldo: number): {mensaje:string, nuevoSaldo:number};
 }
 
-class Variacion1 extends Tragamonedas {
+export class Variacion1 extends Tragamonedas {
 
     constructor() {
         super("Tragamonedas Variacion 1", "V1", 10, "Madera");
     }
 
-    jugar(apuesta: number): string {
-        return `Jugando a ${this.nombreDelJuego} con una apuesta de ${apuesta}.`;
+    jugar(apuesta: number): {mensaje:string, nuevoSaldo:number} {
+        return {mensaje: `Jugando a ${this.nombreDelJuego} con una apuesta de ${apuesta}.`, nuevoSaldo: 0};
     }
 
-    apostarTodo(saldo: number): string {
-        return `Apostando todo el saldo (${saldo}) en ${this.nombreDelJuego}.`;
+    apostarTodo(saldo: number): {mensaje:string, nuevoSaldo:number} {
+        return {mensaje:`Apostando todo el saldo (${saldo}) en ${this.nombreDelJuego}.`, nuevoSaldo: 0};
     }
 }
 
-class Variacion2 extends Tragamonedas {
+export class Variacion2 extends Tragamonedas {
     constructor() {
         super("Tragamonedas Variacion 2", "V2", 10, "Digital");
     }
 
-    jugar(apuesta: number): string {
-        return `Jugando a ${this.nombreDelJuego} con una apuesta de ${apuesta}.`;
+    jugar(apuesta: number): {mensaje:string, nuevoSaldo:number} {
+        return {mensaje: `Jugando a ${this.nombreDelJuego} con una apuesta de ${apuesta}.`, nuevoSaldo: 0};
     }
 
-    apostarTodo(saldo: number): string {
-        return `Apostando todo el saldo (${saldo}) en ${this.nombreDelJuego}.`;
+    apostarTodo(saldo: number): {mensaje:string, nuevoSaldo:number} {
+        return {mensaje:`Apostando todo el saldo (${saldo}) en ${this.nombreDelJuego}.`, nuevoSaldo: 0};
     }
 }
 
-class Ruleta extends Juego {
+export class Ruleta extends Juego {
     private numeros: number = 38;
 
     constructor(){
         super("Ruleta")
     }
 
-    jugar(apuesta: number, numeroElegido: number): string {
-        return `Jugando a la ${this.nombreDelJuego} con una apuesta de ${apuesta} al número ${numeroElegido}.`;
+    jugar(apuesta: number, numeroElegido: number): {mensaje:string, nuevoSaldo:number} {
+        return {mensaje:`Jugando a la ${this.nombreDelJuego} con una apuesta de ${apuesta} al número ${numeroElegido}.`, nuevoSaldo:0};
     }
 
-    apostarTodo(saldo: number): string {
-        return `Apostando todo el saldo (${saldo}) en la ${this.nombreDelJuego}.`;
+    apostarTodo(saldo: number): {mensaje:string, nuevoSaldo:number} {
+        return {mensaje:`Apostando todo el saldo (${saldo}) en la ${this.nombreDelJuego}.`, nuevoSaldo:0};
     }
 }
 
-class CarreraDeCaballos extends Juego {
+export class CarreraDeCaballos extends Juego {
     private caballos: string[] = ["Caballo 1 - Margarita", "Caballo 2 - Picante", "Caballo 3 - Tormenta", "Caballo 4 - Petiso"];
     private caballoElegido: number;
 
@@ -90,35 +90,52 @@ class CarreraDeCaballos extends Juego {
             console.log(`${index + 1}. ${caballo}`);
         });
 
-        const caballoElegido = readlineSync.questionInt("Ingresa el número del caballo elegido: ");
+        const caballoElegido = readlineSync.questionInt("Ingresa el numero del caballo elegido: ");
         const indice = caballoElegido - 1;
 
         if (indice >= 0 && indice < this.caballos.length) {
             return this.caballoElegido = indice;
         } else {
-            console.log("Selección inválida. Por favor, elige un número válido.");
+            console.log("Selección inválida. Por favor, elige un numero válido.");
             return this.listarCaballos();
         }
     }
 
-    jugar(apuesta: number, caballoElegido: number): string {
-        return `Jugando a ${this.nombreDelJuego} con una apuesta de ${apuesta} al ${caballoElegido}.`;
+    jugar(apuesta: number, caballoElegido: number): { mensaje: string; nuevoSaldo: number } {
+        console.log(`Iniciando la carrera de caballos...`);
+
+        const ganador = Math.floor(Math.random() * this.caballos.length);
+        console.log(`\nEl ganador es ${this.caballos[ganador]}!`);
+
+        if (ganador === caballoElegido) {
+            return { mensaje: `Felicidades, ¡ganaste! El ganador es ${this.caballos[ganador]}.`, nuevoSaldo: apuesta * 4 };
+        } else {
+            return { mensaje: `Lo siento, perdiste. El ganador es ${this.caballos[ganador]}.`, nuevoSaldo: 0 - apuesta };
+        }
     }
 
-    apostarTodo(saldo: number, caballoElegido: number): string {
-        return `Apostando todo el saldo (${saldo}) al ${caballoElegido} en ${this.nombreDelJuego}.`;
+    apostarTodo(saldo: number, caballoElegido: number): { mensaje: string; nuevoSaldo: number } {
+        console.log(`Iniciando la carrera de caballos...`);
+
+        const ganador = Math.floor(Math.random() * this.caballos.length);
+        console.log(`\nEl ganador es ${this.caballos[ganador]}!`);
+
+        if (ganador === caballoElegido) {
+            return { mensaje: `Felicidades, ¡ganaste! El ganador es ${this.caballos[ganador]}.`, nuevoSaldo: saldo * 4 };
+        } else {
+            return { mensaje: `Lo siento, perdiste. El ganador es ${this.caballos[ganador]}.`, nuevoSaldo: 0 };
+        }
     }
 }
 
-class Jugador {
+export class Jugador {
     private nombre: string;
     private edad: number;
-    private saldo: number;
+    private saldo: number = 1000;
 
-    constructor(nombre: string, edad: number, saldo: number = 1000) {
+    constructor(nombre: string, edad: number) {
         this.nombre = nombre;
         this.edad = edad;
-        this.saldo = saldo;
     }
 
     getNombre(): string {
@@ -151,15 +168,18 @@ export class Casino {
         this.nombreCasino = nombreCasino;
     }
 
-    agregarJugador(jugador: Jugador): void {
+    agregarJugador(JugadorClase: new (nombre: string, edad: number) => Jugador, nombre: string, edad: number, saldo: number = 1000): void {
+        const jugador = new JugadorClase(nombre, edad);
+
         if (jugador.getEdad() >= 18) {
             this.jugadores.push(jugador);
         } else {
-            console.log(`${jugador.getEdad} no es mayor de edad y no puede jugar en el casino.`);
+            console.log(`${jugador.getNombre()} no es mayor de edad y no puede jugar en el casino.`);
         }
     }
 
-    agregarJuego(juego: Juego): void {
+    agregarJuego(JuegoClase: new () => Juego): void {
+        const juego = new JuegoClase();
         this.juegos.push(juego);
     }
 
