@@ -38,13 +38,34 @@ class Variacion1 extends Tragamonedas {
     }
 
     jugar(apuesta: number): string {
-        return `Jugando a ${this.nombreDelJuego} con una apuesta de ${apuesta}.`;
+        if (apuesta < this.apuestaMinima) {
+            return "❌ La apuesta mínima es "+ this.apuestaMinima +" 💰.";
+        }
+
+        // Simulando el resultado de los rodillos
+        const rodillos = ['🍒', '🍋', '🔔', '⭐', '🍊'];
+        const resultado = [
+            rodillos[Math.floor(Math.random() * rodillos.length)],
+            rodillos[Math.floor(Math.random() * rodillos.length)],
+            rodillos[Math.floor(Math.random() * rodillos.length)]
+        ];
+
+        const combinacionGanadora = resultado.every(symbol => symbol === '🍒') || 
+                                     resultado.every(symbol => symbol === '🍋') || 
+                                     resultado.every(symbol => symbol === '🔔');
+
+        if (combinacionGanadora) {
+            return "🎉 ¡Ganaste! 🎉 Resultado: ${resultado.join(' ')}. Jugaste a ${this.nombreDelJuego} con una apuesta de ${apuesta} 💵.";
+        } else {
+            return "😞 Perdiste. 😞 Resultado: ${resultado.join(' ')}. Jugaste a ${this.nombreDelJuego} con una apuesta de ${apuesta} 💵.";
+        }
     }
 
     apostarTodo(saldo: number): string {
-        return `Apostando todo el saldo (${saldo}) en ${this.nombreDelJuego}.`;
+        return "🎲 Apostando todo el saldo (${saldo}) en ${this.nombreDelJuego} 🎰.";
     }
 }
+
 
 class Variacion2 extends Tragamonedas {
     constructor() {
@@ -52,11 +73,11 @@ class Variacion2 extends Tragamonedas {
     }
 
     jugar(apuesta: number): string {
-        return `Jugando a ${this.nombreDelJuego} con una apuesta de ${apuesta}.`;
+        return "Jugando a ${this.nombreDelJuego} con una apuesta de ${apuesta}.";
     }
 
     apostarTodo(saldo: number): string {
-        return `Apostando todo el saldo (${saldo}) en ${this.nombreDelJuego}.`;
+        return "Apostando todo el saldo (${saldo}) en ${this.nombreDelJuego}.";
     }
 }
 
@@ -68,11 +89,11 @@ class Ruleta extends Juego {
     }
 
     jugar(apuesta: number, numeroElegido: number): string {
-        return `Jugando a la ${this.nombreDelJuego} con una apuesta de ${apuesta} al número ${numeroElegido}.`;
+        return "Jugando a la ${this.nombreDelJuego} con una apuesta de ${apuesta} al número ${numeroElegido}.";
     }
 
     apostarTodo(saldo: number): string {
-        return `Apostando todo el saldo (${saldo}) en la ${this.nombreDelJuego}.`;
+        return "Apostando todo el saldo (${saldo}) en la ${this.nombreDelJuego}.";
     }
 }
 
@@ -87,7 +108,7 @@ class CarreraDeCaballos extends Juego {
     listarCaballos(): number {
         console.log("Elige un caballo para apostar:");
         this.caballos.forEach((caballo, index) => {
-            console.log(`${index + 1}. ${caballo}`);
+            console.log("${index + 1}. ${caballo}");
         });
 
         const caballoElegido = readlineSync.questionInt("Ingresa el número del caballo elegido: ");
@@ -102,11 +123,11 @@ class CarreraDeCaballos extends Juego {
     }
 
     jugar(apuesta: number, caballoElegido: number): string {
-        return `Jugando a ${this.nombreDelJuego} con una apuesta de ${apuesta} al ${caballoElegido}.`;
+        return "Jugando a ${this.nombreDelJuego} con una apuesta de ${apuesta} al ${caballoElegido}.";
     }
 
     apostarTodo(saldo: number, caballoElegido: number): string {
-        return `Apostando todo el saldo (${saldo}) al ${caballoElegido} en ${this.nombreDelJuego}.`;
+        return "Apostando todo el saldo (${saldo}) al ${caballoElegido} en ${this.nombreDelJuego}.";
     }
 }
 
@@ -155,7 +176,7 @@ export class Casino {
         if (jugador.getEdad() >= 18) {
             this.jugadores.push(jugador);
         } else {
-            console.log(`${jugador.getEdad} no es mayor de edad y no puede jugar en el casino.`);
+            console.log("${jugador.getEdad} no es mayor de edad y no puede jugar en el casino.");
         }
     }
 
@@ -166,7 +187,7 @@ export class Casino {
     listarJuegos(): void {
         console.log("Juegos disponibles en el casino:");
         this.juegos.forEach(juego => {
-            console.log(`- ${juego["nombreDelJuego"]}`);
+            console.log("- ${juego["nombreDelJuego"]}");
         });
     }
 }
