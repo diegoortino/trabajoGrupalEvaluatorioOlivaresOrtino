@@ -1,13 +1,12 @@
-import * as readlineSync from "readline-sync";
-import { CarreraDeCaballos, Casino, Ruleta, Variacion1, Variacion2, Jugador } from "./app";
-
-let CasinoMain = new Casino("Lucky 38 de New Vegas");
-
-CasinoMain.agregarJuego(Variacion1);
-CasinoMain.agregarJuego(Variacion2);
-CasinoMain.agregarJuego(Ruleta);
-CasinoMain.agregarJuego(CarreraDeCaballos);
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var readlineSync = require("readline-sync");
+var app_1 = require("./app");
+var CasinoMain = new app_1.Casino("Lucky 38 de New Vegas");
+CasinoMain.agregarJuego(app_1.Variacion1);
+CasinoMain.agregarJuego(app_1.Variacion2);
+CasinoMain.agregarJuego(app_1.Ruleta);
+CasinoMain.agregarJuego(app_1.CarreraDeCaballos);
 function menuPrincipal() {
     console.clear();
     mensajeCentrado("Usted esta en el lobby del casino " + CasinoMain.getNombreCasino());
@@ -15,33 +14,28 @@ function menuPrincipal() {
     CasinoMain.listarJuegos();
     console.log("5. Salir");
 }
-
-function mensajeCentrado(mensaje: string) {
-    const anchoDeConsola = process.stdout.columns || 80;
-    const padding = Math.max(0, Math.floor((anchoDeConsola - mensaje.length) / 2));
-    const espacios = Array(padding).fill(' ').join('');
+function mensajeCentrado(mensaje) {
+    var anchoDeConsola = process.stdout.columns || 80;
+    var padding = Math.max(0, Math.floor((anchoDeConsola - mensaje.length) / 2));
+    var espacios = Array(padding).fill(' ').join('');
     console.log(espacios + mensaje);
 }
-
 function registrarse() {
-    let registrado = false;
-
+    var registrado = false;
     while (!registrado) {
-        const nombre = readlineSync.question('Nombre: ');
-        const edad = readlineSync.questionInt('Edad: ');
-        
+        var nombre = readlineSync.question('Nombre: ');
+        var edad = readlineSync.questionInt('Edad: ');
         registrado = CasinoMain.agregarJugador(nombre, edad);
-        
         if (registrado) {
             console.log("Jugador registrado exitosamente en el casino.");
             menuPrincipal();
-        } else {
+        }
+        else {
             console.log("Registro fallido. Inténtalo nuevamente.");
             console.log();
         }
     }
 }
-
 function menuInicial() {
     console.clear();
     console.log();
@@ -50,8 +44,7 @@ function menuInicial() {
     console.log("1. Ingresar");
     console.log("2. Salir");
     console.log("");
-
-    const opcion = readlineSync.questionInt("Ingrese: ");
+    var opcion = readlineSync.questionInt("Ingrese: ");
     switch (opcion) {
         case 1:
             console.clear();
@@ -68,9 +61,7 @@ function menuInicial() {
             break;
     }
 }
-
 function iniciarJuego() {
     menuInicial();
 }
-
-iniciarJuego()
+iniciarJuego();
