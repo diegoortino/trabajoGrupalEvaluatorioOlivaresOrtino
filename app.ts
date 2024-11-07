@@ -1,6 +1,10 @@
 import * as readlineSync from "readline-sync";
 
+<<<<<<< HEAD
 interface IJuego {
+    jugar(apuesta: number, parametroAdicional?: any):string;
+=======
+export interface IJuego {
     jugar(apuesta: number, parametroAdicional?: any): string;
     apostarTodo(saldo: number, parametroAdicional?: any): string;
 }
@@ -92,23 +96,64 @@ export class Variacion2 extends Tragamonedas {
 */
 class Ruleta extends Juego {
     private numeros: number = 38;
+    private ganador: number;
 
+<<<<<<< HEAD
+
+    constructor() {
+        super("Ruleta");
+    }
+
+    jugar(apuesta: number, numeroElegido:number,):string {
+        // Validación de la apuesta
+        if (apuesta <= 0) {
+            return "La apuesta debe ser mayor a 0."
+        }
+        // Validación del número elegido
+        if (numeroElegido < 0 || numeroElegido >= this.numeros) {
+            return "El número elegido debe estar entre 0 y 37."
+        }
+        
+        // Generar un número aleatorio entre 0 y 37
+        const numeroGanador = Math.floor(Math.random() * this.numeros);
+        
+        // Imprimir el resultado
+        if (numeroGanador === numeroElegido) {
+            console.log(`¡Felicidades! El número ganador es ${numeroGanador}. ¡Has ganado!`);
+            
+            
+        } else {
+            console.log(`El número ganador es ${numeroGanador}. Mejor suerte la próxima vez.`);
+        }
+        return `Jugando a la ${this.nombreDelJuego} con una apuesta de ${apuesta} al número ${numeroElegido}.`;
+        
+=======
     constructor(){
-        super("Ruleta")
+        super("Ruleta",true)
     }
 
     jugar(apuesta: number, numeroElegido: number): string {
-        return `Jugando a la ${this.nombreDelJuego} con una apuesta de ${apuesta} al número ${numeroElegido}.`;
+        throw new Error("Method not implemented.");
+>>>>>>> d9b448d6a9981ac25b15523c1e895dca7f4dc870
     }
 
     apostarTodo(saldo: number): string {
-        return `Apostando todo el saldo (${saldo}) en la ${this.nombreDelJuego}.`;
+        throw new Error("Method not implemented.");
+    }
+    verResultado(): boolean {
+        throw new Error("Method not implemented.");
+    }
+    calcularResultado(apuesta: number): number {
+        throw new Error("Method not implemented.");
     }
 }
 
+<<<<<<< HEAD
 
 class CarreraDeCaballos extends Juego {
-    protected esGanador: boolean = false;
+=======
+export class CarreraDeCaballos extends Juego {
+>>>>>>> d9b448d6a9981ac25b15523c1e895dca7f4dc870
     private caballos: string[] = ["Caballo 1 - Margarita", "Caballo 2 - Picante", "Caballo 3 - Tormenta", "Caballo 4 - Petiso"];
     private caballoGanador: number;
 
