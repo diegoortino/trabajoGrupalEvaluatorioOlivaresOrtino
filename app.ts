@@ -1,13 +1,14 @@
 import * as readlineSync from "readline-sync";
 
-export interface IJuego {
-    jugar(apuesta: number, parametroAdicional?: any): string;
-    apostarTodo(saldo: number, parametroAdicional?: any): string;
-    verResultado():boolean;
-    calcularResultado(apuesta:number):number;
+export interface ICasino {
+    abrirCasino(): void;
+    cerrarCasino(): void;
+    verMayoriaEdad(jugador:Jugador): boolean;
+    cambiarDineroPorFichas(jugador:Jugador, valor:number): void;
+    cobrarLaCaja(jugador:Jugador, valor:number): void; 
 }
 
-export abstract class Juego implements IJuego{
+export abstract class Juego{
     protected nombreDelJuego: string;
     protected esGanador: boolean;
     
@@ -20,7 +21,7 @@ export abstract class Juego implements IJuego{
     abstract jugar(apuesta: number, parametroAdicional?: any): string;
     abstract apostarTodo(saldo: number, parametroAdicional?: any): string;
     abstract verResultado():boolean;
-    abstract calcularResultado(apuesta:number):number
+    abstract calcularResultado(apuesta:number):number;
 }
 
 export abstract class Tragamonedas extends Juego {
@@ -39,6 +40,7 @@ export abstract class Tragamonedas extends Juego {
     abstract apostarTodo(saldo: number): string;
     abstract verResultado():boolean;
     abstract calcularResultado(apuesta:number):number
+    abstract toString():string;
 }
 
 export class Variacion1 extends Tragamonedas {
@@ -62,6 +64,11 @@ export class Variacion1 extends Tragamonedas {
     apostarTodo(saldo: number): string {
         throw new Error("Method not implemented.");
     }
+
+    toString(): string {
+        return this.nombreDelJuego;
+    }
+
 }
 
 export class Variacion2 extends Tragamonedas {
@@ -83,28 +90,47 @@ export class Variacion2 extends Tragamonedas {
     calcularResultado(apuesta: number): number {
         throw new Error("Method not implemented.");
     }
+
+    toString(): string {
+        return this.nombreDelJuego;
+    }
 }
 
 export class Ruleta extends Juego {
-    
     private numeros: number = 38;
-
+    private ganador: number;
     constructor(){
         super("Ruleta",true)
     }
-
-    jugar(apuesta: number, numeroElegido: number): string {
-        throw new Error("Method not implemented.");
+    jugar(apuesta: number, numeroElegido: number,): string {
+        this.ganador = 2 /*Math.floor(Math.random() * this.numeros)*/;
+        if (numeroElegido === this.ganador) {
+            this.esGanador = true;
+            return `¡Felicidades! Has ganado la apuesta. El número ganador fue ${this.ganador}.`;
+        } else {
+            this.esGanador = false;
+            return `Lo siento, perdiste. El número ganador fue ${this.ganador}.`;
+        }
     }
-
-    apostarTodo(saldo: number): string {
-        throw new Error("Method not implemented.");
+    apostarTodo(saldo: number, numeroElegido: number): string {
+        this.ganador = Math.floor(Math.random() * this.numeros);
+        if (numeroElegido === this.ganador) {
+            this.esGanador = true;
+            return `¡Felicidades! Has ganado la apuesta. El número ganador fue ${this.ganador}.`;
+        } else {
+            this.esGanador = false;
+            return `Lo siento, perdiste. El número ganador fue ${this.ganador}.`;
+        }
     }
     verResultado(): boolean {
-        throw new Error("Method not implemented.");
+        return this.esGanador
     }
     calcularResultado(apuesta: number): number {
-        throw new Error("Method not implemented.");
+        if(this.esGanador === false) {
+            return -apuesta;
+        }else {
+            return apuesta * 37;
+        }
     }
 }
 
@@ -158,18 +184,25 @@ export class CarreraDeCaballos extends Juego {
             return `Lo siento, perdiste. El ganador es ${this.caballos[ganador]}.`;
         }
     }
+
     verResultado(): boolean {
         throw new Error("Method not implemented.");
     }
+
     calcularResultado(apuesta: number): number {
         throw new Error("Method not implemented.");
+    }
+
+    toString(): string {
+        return this.nombreDelJuego;
     }
 }
 
 export class Jugador {
     private nombre: string;
     private edad: number;
-    private saldo: number = 1000;
+    private dinero: number = 1000;
+    private fichas: number = 0;
 
     constructor(nombre: string, edad: number) {
         this.nombre = nombre;
@@ -184,17 +217,26 @@ export class Jugador {
         return this.edad;
     }
 
-    getSaldo(): number {
-        return this.saldo;
+    getDinero(): number {
+        return this.dinero;
     }
 
-    modificarSaldo(cantidad: number): void {
-        this.saldo += cantidad;
+    getFichas(): number {
+        return this.fichas;
+    }
+
+    setDinero(nuevoValorDinero): void {
+        this.dinero = nuevoValorDinero
+    }
+
+    setFichas(nuevoValorFichas: number): void {
+        this.fichas = nuevoValorFichas;
     }
 }
 
-export class Casino {
+export class Casino implements ICasino{
     private nombreCasino: string;
+    private estaAbierto: boolean = false;
     private jugadores: Jugador[] = [];
     private juegos: Juego[] = [];
 
@@ -202,23 +244,71 @@ export class Casino {
         this.nombreCasino = nombreCasino;
     }
 
-    getNombreCasino():string {
+    getNombreCasino(): string {
         return this.nombreCasino;
     }
 
-    agregarJugador(nombre: string, edad: number): boolean {
-        const jugador = new Jugador(nombre, edad);
+    abrirCasino(): void {
+        if(!this.estaAbierto){
+            this.estaAbierto = true;
+        } else {
+            this.estaAbierto = false;
+        };
+    }
+
+    cerrarCasino(): void {
+        if(this.estaAbierto){
+            this.estaAbierto = false;
+        } else {
+            this.estaAbierto = true;
+        };
+    }
+
+    verMayoriaEdad(jugador:Jugador): boolean {
         if (jugador.getEdad() >= 18) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    cambiarDineroPorFichas (jugador:Jugador, valor:number): void {    
+        let dineroDelJugador: number = jugador.getDinero();
+        let fichasDelJugador: number = jugador.getFichas();
+
+        if (valor > 0 && dineroDelJugador >= valor) {
+            dineroDelJugador -= valor;
+            fichasDelJugador += valor;
+            jugador.setDinero(dineroDelJugador);
+            jugador.setFichas(fichasDelJugador);
+        } else {
+            jugador.setDinero(dineroDelJugador);
+            jugador.setFichas(fichasDelJugador);
+        }
+    }
+
+    cobrarLaCaja (jugador:Jugador, valor:number) : void  {
+        let dineroDelJugador: number = jugador.getDinero();
+        let fichasDelJugador: number = jugador.getFichas();
+
+        if (valor > 0 && fichasDelJugador >= valor) {
+            dineroDelJugador += valor;
+            fichasDelJugador -= valor;
+            jugador.setDinero(dineroDelJugador);
+            jugador.setFichas(fichasDelJugador);
+        } else {
+            jugador.setDinero(dineroDelJugador);
+            jugador.setFichas(fichasDelJugador);
+        }
+    }
+
+    agregarJugador(jugador: Jugador): boolean {
+        if (this.verMayoriaEdad(jugador)) {
             this.jugadores.push(jugador);
             return true;
         } else {
-            console.log(`${jugador.getNombre()} no es mayor de edad y no puede jugar en el casino.`);
             return false;
         }
-    }
-    
-    getSaldoJugador(): number {
-        return this.jugadores[0].getSaldo();
     }
 
     agregarJuego(JuegoClase: new () => Juego): void {
@@ -226,16 +316,38 @@ export class Casino {
         this.juegos.push(juego);
     }
 
-    listarJuegos(): void {
-        this.juegos.forEach((juego, index) => {
-            console.log(`${index + 1}. ${juego["nombreDelJuego"]}`);
-        });
-    }
-    
-    jugarJuego(opcionElegida: number, apuesta: number, parametroAdicional?: any): void {
+    modificarFichas(jugador: Jugador, resultado:number):void{
+        let nuevoValor = jugador.getFichas() + resultado;
+        jugador.setFichas(nuevoValor);
     }
 
-    apostarTodo(opcionElegida: number, apuesta: number, parametroAdicional?: any): void {
+    jugarJuego(jugador:Jugador, numeroDeJuego:number,apuesta: number, parametroAdicional?: any): string{
+        if (numeroDeJuego >= 0 && numeroDeJuego < this.juegos.length) {
+            if (jugador.getFichas() >= apuesta){
+            const juegoSeleccionado = this.juegos[numeroDeJuego];
+            let jugar = juegoSeleccionado.jugar(apuesta,parametroAdicional);
+            let resultado = juegoSeleccionado.calcularResultado(apuesta);
+            this.modificarFichas(jugador,resultado);
+            return jugar
+        } else { return "No tenes suficientes fichas"
+            }
+    } else{
+        return "a"
+    } 
     }
     
-}
+    jugarApostandoTodo(jugador:Jugador, numeroDeJuego:number,fichas: number, parametroAdicional?: any): string{
+        if (numeroDeJuego >= 0 && numeroDeJuego < this.juegos.length) {
+            if (jugador.getFichas() >= fichas){
+            const juegoSeleccionado = this.juegos[numeroDeJuego];
+            let jugar = juegoSeleccionado.jugar(fichas,parametroAdicional);
+            let resultado = juegoSeleccionado.calcularResultado(fichas);
+            this.modificarFichas(jugador,resultado);
+            return jugar
+        } else { return "No tenes suficientes fichas"
+            }
+    } else{
+        return "a"
+    } 
+    }
+ }
