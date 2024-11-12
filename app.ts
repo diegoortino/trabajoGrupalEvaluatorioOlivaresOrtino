@@ -1,5 +1,3 @@
-import * as readlineSync from "readline-sync";
-
 export interface ICasino {
     abrirCasino(): void;
     cerrarCasino(): void;
@@ -18,13 +16,14 @@ export abstract class Juego{
         this.esGanador = esGanador;
     }
 
-    abstract jugar(apuesta: number, parametroAdicional?: any): string;
-    abstract apostarTodo(saldo: number, parametroAdicional?: any): string;
+    abstract jugar(apuesta: number, parametroAdicional?: any): number;
+    abstract apostarTodo(saldo: number, parametroAdicional?: any): number;
     abstract verResultado():boolean;
     abstract calcularResultado(apuesta:number):number;
+    abstract mensajeResultado(resultado:number, parametroAdicional?: any):string;
 }
 
-export abstract class Tragamonedas extends Juego {
+/*export abstract class Tragamonedas extends Juego {
     protected versionDelJuego: string;
     protected apuestaMinima: number;
     protected tipoDeRodillo: string;
@@ -40,7 +39,6 @@ export abstract class Tragamonedas extends Juego {
     abstract apostarTodo(saldo: number): string;
     abstract verResultado():boolean;
     abstract calcularResultado(apuesta:number):number
-    abstract toString():string;
 }
 
 export class Variacion1 extends Tragamonedas {
@@ -95,31 +93,46 @@ export class Variacion2 extends Tragamonedas {
         return this.nombreDelJuego;
     }
 }
-
+*/
 export class Ruleta extends Juego {
     private numeros: number = 38;
     private ganador: number;
+    protected esGanador:boolean = false
+
     constructor(){
-        super("Ruleta",true)
+        super("Ruleta",false)
     }
-    jugar(apuesta: number, numeroElegido: number,): string {
-        this.ganador = 2 /*Math.floor(Math.random() * this.numeros)*/;
-        if (numeroElegido === this.ganador) {
-            this.esGanador = true;
-            return `¡Felicidades! Has ganado la apuesta. El número ganador fue ${this.ganador}.`;
+
+    jugar(apuesta: number, numeroElegido: number,): number {
+        this.ganador = Math.floor(Math.random() * this.numeros);
+        if (numeroElegido >= 0 && numeroElegido < this.numeros) {
+            if (numeroElegido === this.ganador) {
+                this.esGanador = true;
+                const resultado = this.calcularResultado(apuesta);
+                return resultado
+            } else {
+                this.esGanador = false;
+                const resultado = this.calcularResultado(apuesta);
+                return resultado
+            }
         } else {
-            this.esGanador = false;
-            return `Lo siento, perdiste. El número ganador fue ${this.ganador}.`;
+            return 0;
         }
     }
-    apostarTodo(saldo: number, numeroElegido: number): string {
+    apostarTodo(saldo: number, numeroElegido: number): number {
         this.ganador = Math.floor(Math.random() * this.numeros);
-        if (numeroElegido === this.ganador) {
-            this.esGanador = true;
-            return `¡Felicidades! Has ganado la apuesta. El número ganador fue ${this.ganador}.`;
+        if (numeroElegido >= 0 && numeroElegido < this.numeros) {
+            if (numeroElegido === this.ganador) {
+                this.esGanador = true;
+                const resultado = this.calcularResultado(saldo);
+                return resultado
+            } else {
+                this.esGanador = false;
+                const resultado = this.calcularResultado(saldo);
+                return resultado
+            }
         } else {
-            this.esGanador = false;
-            return `Lo siento, perdiste. El número ganador fue ${this.ganador}.`;
+            return 0;
         }
     }
     verResultado(): boolean {
@@ -132,9 +145,37 @@ export class Ruleta extends Juego {
             return apuesta * 37;
         }
     }
-}
+    mensajeResultado(resultado: number, numeroElegido: number): string {
+        if (resultado == 0 ) {
+            return "No ingresaste un numero valido";
+        } else {
+            if (this.esGanador == true) {
+            return `
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                :destellos: :gorro_de_fiesta: ¡FELICIDADES! :gorro_de_fiesta: :destellos:
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                :cara_de_fiesta: ¡Has ganado la apuesta!
+                :diamante_azul_pequeño: Número elegido: ${numeroElegido} :1234:
+                :diamante_azul_pequeño: Número ganador: ${this.ganador} :dardo:
+                :bolsa_de_dinero: ¡Ganancia total! :bolsa_de_dinero:
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                            `;
+        } else {
+            return `
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                :decepcionado: :corazón_partido: Lo siento, perdiste :corazón_partido: :decepcionado:
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                :diamante_azul_pequeño: Número elegido: ${numeroElegido} :1234:
+                :diamante_azul_pequeño: Número ganador: ${this.ganador} :dardo:
+                :dinero_con_alas: Mejor suerte la próxima vez :dinero_con_alas:
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                            `;
+        }
+    }
+    }
+    }
 
-export class CarreraDeCaballos extends Juego {
+/*export class CarreraDeCaballos extends Juego {
     private caballos: string[] = ["Caballo 1 - Margarita", "Caballo 2 - Picante", "Caballo 3 - Tormenta", "Caballo 4 - Petiso"];
     private caballoElegido: number;
 
@@ -196,7 +237,7 @@ export class CarreraDeCaballos extends Juego {
     toString(): string {
         return this.nombreDelJuego;
     }
-}
+}*/
 
 export class Jugador {
     private nombre: string;
@@ -323,12 +364,15 @@ export class Casino implements ICasino{
 
     jugarJuego(jugador:Jugador, numeroDeJuego:number,apuesta: number, parametroAdicional?: any): string{
         if (numeroDeJuego >= 0 && numeroDeJuego < this.juegos.length) {
-            if (jugador.getFichas() >= apuesta){
+            if (jugador.getFichas() >= apuesta && apuesta > 0){
             const juegoSeleccionado = this.juegos[numeroDeJuego];
-            let jugar = juegoSeleccionado.jugar(apuesta,parametroAdicional);
-            let resultado = juegoSeleccionado.calcularResultado(apuesta);
-            this.modificarFichas(jugador,resultado);
-            return jugar
+            let resultado = juegoSeleccionado.jugar(apuesta,parametroAdicional);
+            if (resultado == 0) {return juegoSeleccionado.mensajeResultado(resultado,parametroAdicional)
+
+            }else{
+                this.modificarFichas(jugador, resultado);
+                return juegoSeleccionado.mensajeResultado(resultado ,parametroAdicional);
+            }
         } else { return "No tenes suficientes fichas"
             }
     } else{
@@ -338,16 +382,19 @@ export class Casino implements ICasino{
     
     jugarApostandoTodo(jugador:Jugador, numeroDeJuego:number,fichas: number, parametroAdicional?: any): string{
         if (numeroDeJuego >= 0 && numeroDeJuego < this.juegos.length) {
-            if (jugador.getFichas() >= fichas){
+            if (jugador.getFichas() >= fichas && fichas > 0){
             const juegoSeleccionado = this.juegos[numeroDeJuego];
-            let jugar = juegoSeleccionado.jugar(fichas,parametroAdicional);
-            let resultado = juegoSeleccionado.calcularResultado(fichas);
-            this.modificarFichas(jugador,resultado);
-            return jugar
+            let resultado = juegoSeleccionado.jugar(fichas, parametroAdicional);
+            if (resultado == 0) {return juegoSeleccionado.mensajeResultado(resultado,parametroAdicional)
+
+            }else{
+                this.modificarFichas(jugador, resultado);
+                return juegoSeleccionado.mensajeResultado(resultado ,parametroAdicional);
+            }
         } else { return "No tenes suficientes fichas"
             }
     } else{
         return "a"
     } 
     }
- }
+}

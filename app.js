@@ -15,8 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Casino = exports.Jugador = exports.CarreraDeCaballos = exports.Ruleta = exports.Variacion2 = exports.Variacion1 = exports.Tragamonedas = exports.Juego = void 0;
-var readlineSync = require("readline-sync");
+exports.Casino = exports.Jugador = exports.Ruleta = exports.Juego = void 0;
 var Juego = /** @class */ (function () {
     function Juego(nombreDelJuego, esGanador) {
         this.nombreDelJuego = nombreDelJuego;
@@ -25,91 +24,119 @@ var Juego = /** @class */ (function () {
     return Juego;
 }());
 exports.Juego = Juego;
-var Tragamonedas = /** @class */ (function (_super) {
-    __extends(Tragamonedas, _super);
-    function Tragamonedas(nombreDelJuego, esGanador, versionDelJuego, apuestaMinima, tipoDeRodillo) {
-        var _this = _super.call(this, nombreDelJuego, esGanador) || this;
-        _this.versionDelJuego = versionDelJuego;
-        _this.apuestaMinima = apuestaMinima;
-        _this.tipoDeRodillo = tipoDeRodillo;
-        return _this;
+/*export abstract class Tragamonedas extends Juego {
+    protected versionDelJuego: string;
+    protected apuestaMinima: number;
+    protected tipoDeRodillo: string;
+
+
+    constructor(nombreDelJuego: string, esGanador: boolean, versionDelJuego: string, apuestaMinima: number, tipoDeRodillo: string) {
+        super(nombreDelJuego, esGanador);
+        this.versionDelJuego = versionDelJuego;
+        this.apuestaMinima = apuestaMinima;
+        this.tipoDeRodillo = tipoDeRodillo;
     }
-    return Tragamonedas;
-}(Juego));
-exports.Tragamonedas = Tragamonedas;
-var Variacion1 = /** @class */ (function (_super) {
-    __extends(Variacion1, _super);
-    function Variacion1() {
-        return _super.call(this, "Tragamonedas Variacion 1", true, "V1", 10, "Madera") || this;
+    abstract jugar(apuesta: number): string;
+    abstract apostarTodo(saldo: number): string;
+    abstract verResultado():boolean;
+    abstract calcularResultado(apuesta:number):number
+}
+
+export class Variacion1 extends Tragamonedas {
+    
+    constructor() {
+        super("Tragamonedas Variacion 1",true, "V1", 10, "Madera");
     }
-    Variacion1.prototype.verResultado = function () {
+
+    verResultado(): boolean {
         throw new Error("Method not implemented.");
-    };
-    Variacion1.prototype.calcularResultado = function (apuesta) {
+    }
+
+    calcularResultado(apuesta: number): number {
         throw new Error("Method not implemented.");
-    };
-    Variacion1.prototype.jugar = function (apuesta) {
+    }
+
+    jugar(apuesta: number): string {
         throw new Error("Method not implemented.");
-    };
-    Variacion1.prototype.apostarTodo = function (saldo) {
+    }
+
+    apostarTodo(saldo: number): string {
         throw new Error("Method not implemented.");
-    };
-    Variacion1.prototype.toString = function () {
+    }
+
+    toString(): string {
         return this.nombreDelJuego;
-    };
-    return Variacion1;
-}(Tragamonedas));
-exports.Variacion1 = Variacion1;
-var Variacion2 = /** @class */ (function (_super) {
-    __extends(Variacion2, _super);
-    function Variacion2() {
-        return _super.call(this, "Tragamonedas Variacion 2", true, "V2", 10, "Digital") || this;
     }
-    Variacion2.prototype.jugar = function (apuesta) {
+
+}
+
+export class Variacion2 extends Tragamonedas {
+    
+    constructor() {
+        super("Tragamonedas Variacion 2", true, "V2", 10, "Digital");
+    }
+
+    jugar(apuesta: number): string {
         throw new Error("Method not implemented.");
-    };
-    Variacion2.prototype.apostarTodo = function (saldo) {
+    }
+
+    apostarTodo(saldo: number): string {
         throw new Error("Method not implemented.");
-    };
-    Variacion2.prototype.verResultado = function () {
+    }
+    verResultado(): boolean {
         throw new Error("Method not implemented.");
-    };
-    Variacion2.prototype.calcularResultado = function (apuesta) {
+    }
+    calcularResultado(apuesta: number): number {
         throw new Error("Method not implemented.");
-    };
-    Variacion2.prototype.toString = function () {
+    }
+
+    toString(): string {
         return this.nombreDelJuego;
-    };
-    return Variacion2;
-}(Tragamonedas));
-exports.Variacion2 = Variacion2;
+    }
+}
+*/
 var Ruleta = /** @class */ (function (_super) {
     __extends(Ruleta, _super);
     function Ruleta() {
-        var _this = _super.call(this, "Ruleta", true) || this;
+        var _this = _super.call(this, "Ruleta", false) || this;
         _this.numeros = 38;
+        _this.esGanador = false;
         return _this;
     }
     Ruleta.prototype.jugar = function (apuesta, numeroElegido) {
-        this.ganador = 2 /*Math.floor(Math.random() * this.numeros)*/;
-        if (numeroElegido === this.ganador) {
-            this.esGanador = true;
-            return "\u00A1Felicidades! Has ganado la apuesta. El n\u00FAmero ganador fue ".concat(this.ganador, ".");
+        this.ganador = Math.floor(Math.random() * this.numeros);
+        if (numeroElegido >= 0 && numeroElegido < this.numeros) {
+            if (numeroElegido === this.ganador) {
+                this.esGanador = true;
+                var resultado = this.calcularResultado(apuesta);
+                return resultado;
+            }
+            else {
+                this.esGanador = false;
+                var resultado = this.calcularResultado(apuesta);
+                return resultado;
+            }
         }
         else {
-            this.esGanador = false;
-            return "Lo siento, perdiste. El n\u00FAmero ganador fue ".concat(this.ganador, ".");
+            return 0;
         }
     };
     Ruleta.prototype.apostarTodo = function (saldo, numeroElegido) {
         this.ganador = Math.floor(Math.random() * this.numeros);
-        if (numeroElegido === this.ganador) {
-            this.esGanador = true;
-            return "\u00A1Felicidades! Has ganado la apuesta. El n\u00FAmero ganador fue ".concat(this.ganador, ".");
+        if (numeroElegido >= 0 && numeroElegido < this.numeros) {
+            if (numeroElegido === this.ganador) {
+                this.esGanador = true;
+                var resultado = this.calcularResultado(saldo);
+                return resultado;
+            }
+            else {
+                this.esGanador = false;
+                var resultado = this.calcularResultado(saldo);
+                return resultado;
+            }
         }
         else {
-            this.esGanador = false;
-            return "Lo siento, perdiste. El n\u00FAmero ganador fue ".concat(this.ganador, ".");
+            return 0;
         }
     };
     Ruleta.prototype.verResultado = function () {
@@ -123,65 +150,85 @@ var Ruleta = /** @class */ (function (_super) {
             return apuesta * 37;
         }
     };
+    Ruleta.prototype.mensajeResultado = function (resultado, numeroElegido) {
+        if (resultado == 0) {
+            return "No ingresaste un numero valido";
+        }
+        else {
+            if (this.esGanador == true) {
+                return "\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                :destellos: :gorro_de_fiesta: \u00A1FELICIDADES! :gorro_de_fiesta: :destellos:\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                :cara_de_fiesta: \u00A1Has ganado la apuesta!\n                :diamante_azul_peque\u00F1o: N\u00FAmero elegido: ".concat(numeroElegido, " :1234:\n                :diamante_azul_peque\u00F1o: N\u00FAmero ganador: ").concat(this.ganador, " :dardo:\n                :bolsa_de_dinero: \u00A1Ganancia total! :bolsa_de_dinero:\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                            ");
+            }
+            else {
+                return "\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                :decepcionado: :coraz\u00F3n_partido: Lo siento, perdiste :coraz\u00F3n_partido: :decepcionado:\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                :diamante_azul_peque\u00F1o: N\u00FAmero elegido: ".concat(numeroElegido, " :1234:\n                :diamante_azul_peque\u00F1o: N\u00FAmero ganador: ").concat(this.ganador, " :dardo:\n                :dinero_con_alas: Mejor suerte la pr\u00F3xima vez :dinero_con_alas:\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                            ");
+            }
+        }
+    };
     return Ruleta;
 }(Juego));
 exports.Ruleta = Ruleta;
-var CarreraDeCaballos = /** @class */ (function (_super) {
-    __extends(CarreraDeCaballos, _super);
-    function CarreraDeCaballos() {
-        var _this = _super.call(this, "Carrera de Caballos", true) || this;
-        _this.caballos = ["Caballo 1 - Margarita", "Caballo 2 - Picante", "Caballo 3 - Tormenta", "Caballo 4 - Petiso"];
-        return _this;
+/*export class CarreraDeCaballos extends Juego {
+    private caballos: string[] = ["Caballo 1 - Margarita", "Caballo 2 - Picante", "Caballo 3 - Tormenta", "Caballo 4 - Petiso"];
+    private caballoElegido: number;
+
+    constructor(){
+        super("Carrera de Caballos", true)
     }
-    CarreraDeCaballos.prototype.listarCaballos = function () {
+
+    listarCaballos(): number {
         console.log("Elige un caballo para apostar:");
-        this.caballos.forEach(function (caballo, index) {
-            console.log("".concat(index + 1, ". ").concat(caballo));
+        this.caballos.forEach((caballo, index) => {
+            console.log(`${index + 1}. ${caballo}`);
         });
-        var caballoElegido = readlineSync.questionInt("Ingresa el numero del caballo elegido: ");
-        var indice = caballoElegido - 1;
+
+        const caballoElegido = readlineSync.questionInt("Ingresa el numero del caballo elegido: ");
+        const indice = caballoElegido - 1;
+
         if (indice >= 0 && indice < this.caballos.length) {
             return this.caballoElegido = indice;
-        }
-        else {
+        } else {
             console.log("Selección inválida. Por favor, elige un numero válido.");
             return this.listarCaballos();
         }
-    };
-    CarreraDeCaballos.prototype.jugar = function (apuesta, caballoElegido) {
-        console.log("Iniciando la carrera de caballos...");
-        var ganador = Math.floor(Math.random() * this.caballos.length);
-        console.log("\nEl ganador es ".concat(this.caballos[ganador], "!"));
+    }
+
+    jugar(apuesta: number, caballoElegido: number): string {
+        console.log(`Iniciando la carrera de caballos...`);
+
+        const ganador = Math.floor(Math.random() * this.caballos.length);
+        console.log(`\nEl ganador es ${this.caballos[ganador]}!`);
+
         if (ganador === caballoElegido) {
-            return "Felicidades, \u00A1ganaste! El ganador es ".concat(this.caballos[ganador], ".");
+            return `Felicidades, ¡ganaste! El ganador es ${this.caballos[ganador]}.`;
+        } else {
+            return `Lo siento, perdiste. El ganador es ${this.caballos[ganador]}.`;
         }
-        else {
-            return "Lo siento, perdiste. El ganador es ".concat(this.caballos[ganador], ".");
-        }
-    };
-    CarreraDeCaballos.prototype.apostarTodo = function (saldo, caballoElegido) {
-        console.log("Iniciando la carrera de caballos...");
-        var ganador = Math.floor(Math.random() * this.caballos.length);
-        console.log("\nEl ganador es ".concat(this.caballos[ganador], "!"));
+    }
+
+    apostarTodo(saldo: number, caballoElegido: number): string{
+        console.log(`Iniciando la carrera de caballos...`);
+
+        const ganador = Math.floor(Math.random() * this.caballos.length);
+        console.log(`\nEl ganador es ${this.caballos[ganador]}!`);
+
         if (ganador === caballoElegido) {
-            return "Felicidades, \u00A1ganaste! El ganador es ".concat(this.caballos[ganador], ".");
+            return `Felicidades, ¡ganaste! El ganador es ${this.caballos[ganador]}.`;
+        } else {
+            return `Lo siento, perdiste. El ganador es ${this.caballos[ganador]}.`;
         }
-        else {
-            return "Lo siento, perdiste. El ganador es ".concat(this.caballos[ganador], ".");
-        }
-    };
-    CarreraDeCaballos.prototype.verResultado = function () {
+    }
+
+    verResultado(): boolean {
         throw new Error("Method not implemented.");
-    };
-    CarreraDeCaballos.prototype.calcularResultado = function (apuesta) {
+    }
+
+    calcularResultado(apuesta: number): number {
         throw new Error("Method not implemented.");
-    };
-    CarreraDeCaballos.prototype.toString = function () {
+    }
+
+    toString(): string {
         return this.nombreDelJuego;
-    };
-    return CarreraDeCaballos;
-}(Juego));
-exports.CarreraDeCaballos = CarreraDeCaballos;
+    }
+}*/
 var Jugador = /** @class */ (function () {
     function Jugador(nombre, edad) {
         this.dinero = 1000;
@@ -293,12 +340,16 @@ var Casino = /** @class */ (function () {
     };
     Casino.prototype.jugarJuego = function (jugador, numeroDeJuego, apuesta, parametroAdicional) {
         if (numeroDeJuego >= 0 && numeroDeJuego < this.juegos.length) {
-            if (jugador.getFichas() >= apuesta) {
+            if (jugador.getFichas() >= apuesta && apuesta > 0) {
                 var juegoSeleccionado = this.juegos[numeroDeJuego];
-                var jugar = juegoSeleccionado.jugar(apuesta, parametroAdicional);
-                var resultado = juegoSeleccionado.calcularResultado(apuesta);
-                this.modificarFichas(jugador, resultado);
-                return jugar;
+                var resultado = juegoSeleccionado.jugar(apuesta, parametroAdicional);
+                if (resultado == 0) {
+                    return juegoSeleccionado.mensajeResultado(resultado, parametroAdicional);
+                }
+                else {
+                    this.modificarFichas(jugador, resultado);
+                    return juegoSeleccionado.mensajeResultado(resultado, parametroAdicional);
+                }
             }
             else {
                 return "No tenes suficientes fichas";
@@ -310,12 +361,16 @@ var Casino = /** @class */ (function () {
     };
     Casino.prototype.jugarApostandoTodo = function (jugador, numeroDeJuego, fichas, parametroAdicional) {
         if (numeroDeJuego >= 0 && numeroDeJuego < this.juegos.length) {
-            if (jugador.getFichas() >= fichas) {
+            if (jugador.getFichas() >= fichas && fichas > 0) {
                 var juegoSeleccionado = this.juegos[numeroDeJuego];
-                var jugar = juegoSeleccionado.jugar(fichas, parametroAdicional);
-                var resultado = juegoSeleccionado.calcularResultado(fichas);
-                this.modificarFichas(jugador, resultado);
-                return jugar;
+                var resultado = juegoSeleccionado.jugar(fichas, parametroAdicional);
+                if (resultado == 0) {
+                    return juegoSeleccionado.mensajeResultado(resultado, parametroAdicional);
+                }
+                else {
+                    this.modificarFichas(jugador, resultado);
+                    return juegoSeleccionado.mensajeResultado(resultado, parametroAdicional);
+                }
             }
             else {
                 return "No tenes suficientes fichas";
