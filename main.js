@@ -4,10 +4,10 @@ var readlineSync = require("readline-sync");
 var app_1 = require("./app");
 var CasinoMain = new app_1.Casino("Lucky 38 de New Vegas");
 var jugadorActual = null;
-CasinoMain.agregarJuego(app_1.Variacion1);
-CasinoMain.agregarJuego(app_1.Variacion2);
+/*CasinoMain.agregarJuego(Variacion1);
+CasinoMain.agregarJuego(Variacion2);*/
 CasinoMain.agregarJuego(app_1.Ruleta);
-CasinoMain.agregarJuego(app_1.CarreraDeCaballos);
+/*CasinoMain.agregarJuego(CarreraDeCaballos);*/
 function mensajeCentrado(mensaje) {
     var anchoDeConsola = process.stdout.columns || 80;
     var padding = Math.max(0, Math.floor((anchoDeConsola - mensaje.length) / 2));
@@ -45,12 +45,14 @@ function menuRuleta() {
             case 1:
                 console.clear();
                 var apuesta = parseInt(readlineSync.question("¡Cuantas fichas desea apostar? ingrese: "));
-                console.log(CasinoMain.jugarJuego(jugadorActual, 2, apuesta, 2));
+                console.log("Recorda que la ruleta tiene los numeros del 0 al 37");
+                var numeroElegido = parseInt(readlineSync.question("Cual es el numero al que desea apostar? ingrese: "));
+                console.log(CasinoMain.jugarJuego(jugadorActual, 0, apuesta, numeroElegido));
                 menuRuleta();
             case 2:
                 console.clear();
                 var fichas = jugadorActual.getFichas();
-                console.log(CasinoMain.jugarApostandoTodo(jugadorActual, 2, fichas, 2));
+                console.log(CasinoMain.jugarApostandoTodo(jugadorActual, 0, fichas, 2));
                 menuRuleta();
             case 3:
                 console.clear();
@@ -69,10 +71,33 @@ function menuRuleta() {
 }
 function menuCarreraDeCaballos() {
     if (jugadorActual) {
-        mensajeCentrado("Bienvenido a la Carrera de Caballos");
-        console.log("Dinero: " + jugadorActual.getDinero());
+        mensajeCentrado("Bienvenido a las carreras de caballos");
         console.log("Fichas: " + jugadorActual.getFichas());
         console.log();
+        console.log("1. Apostar un monto");
+        console.log("2. Apostar todo");
+        console.log("3. Volver al menu de juegos");
+        var opcion = readlineSync.questionInt("Ingrese: ");
+        switch (opcion) {
+            case 1:
+                console.clear();
+                var apuesta = parseInt(readlineSync.question("¡Cuantas fichas desea apostar? ingrese: "));
+                console.log(CasinoMain.jugarJuego(jugadorActual, 2, apuesta, 2));
+                menuRuleta();
+            case 2:
+                console.clear();
+                var fichas = jugadorActual.getFichas();
+                console.log(CasinoMain.jugarApostandoTodo(jugadorActual, 2, fichas, 2));
+                menuRuleta();
+            case 3:
+                console.clear();
+                menuJuegos();
+            default:
+                console.clear();
+                console.log("Opción inválida. Seleccione nuevamente");
+                menuRuleta();
+                break;
+        }
     }
     else {
         console.log("Error: No hay un jugador registrado.");
