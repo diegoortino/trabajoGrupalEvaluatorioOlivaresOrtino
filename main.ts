@@ -31,7 +31,7 @@ function registrarse() {
         registrado = CasinoMain.agregarJugador(new Jugador(nombre, edad));
         
         if (registrado) {
-            jugadorActual = new Jugador(nombre,edad);
+            jugadorActual = new Jugador(nombre, edad);
             console.clear();
             console.log("Jugador registrado exitosamente en el casino.");
             menuPrincipal();
