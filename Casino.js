@@ -8,6 +8,12 @@ var Casino = /** @class */ (function () {
         this.juegos = [];
         this.nombreCasino = nombreCasino;
     }
+    Casino.getInstance = function (nombreCasino) {
+        if (!Casino.instance) {
+            Casino.instance = new Casino(nombreCasino);
+        }
+        return Casino.instance;
+    };
     Casino.prototype.getNombreCasino = function () {
         return this.nombreCasino;
     };
@@ -124,6 +130,7 @@ var Casino = /** @class */ (function () {
             return "a";
         }
     };
+    Casino.instance = null;
     return Casino;
 }());
 exports.Casino = Casino;

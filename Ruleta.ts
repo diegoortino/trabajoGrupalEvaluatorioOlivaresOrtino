@@ -26,20 +26,7 @@ export class Ruleta extends Juego {
         }
     }
     apostarTodo(saldo: number, numeroElegido: number): number {
-        this.ganador = Math.floor(Math.random() * this.numeros);
-        if (numeroElegido >= 0 && numeroElegido < this.numeros) {
-            if (numeroElegido === this.ganador) {
-                this.esGanador = true;
-                const resultado = this.calcularResultado(saldo);
-                return resultado
-            } else {
-                this.esGanador = false;
-                const resultado = this.calcularResultado(saldo);
-                return resultado
-            }
-        } else {
-            return 0;
-        }
+        return this.jugar(saldo, numeroElegido)
     }
     verResultado(): boolean {
         return this.esGanador
@@ -52,31 +39,32 @@ export class Ruleta extends Juego {
         }
     }
     mensajeResultado(resultado: number, numeroElegido: number): string {
-        if (resultado == 0 ) {
-            return "No ingresaste un numero valido";
+        if (resultado == 0) {
+            return "❌ No ingresaste un número válido.";
         } else {
             if (this.esGanador == true) {
-            return `
-                ━━━━━━━━━━━━━━━━━━━━━━━
-                :destellos: :gorro_de_fiesta: ¡FELICIDADES! :gorro_de_fiesta: :destellos:
-                ━━━━━━━━━━━━━━━━━━━━━━━
-                :cara_de_fiesta: ¡Has ganado la apuesta!
-                :diamante_azul_pequeño: Número elegido: ${numeroElegido} :1234:
-                :diamante_azul_pequeño: Número ganador: ${this.ganador} :dardo:
-                :bolsa_de_dinero: ¡Ganancia total! :bolsa_de_dinero:
-                ━━━━━━━━━━━━━━━━━━━━━━━
-                            `;
-        } else {
-            return `
-                ━━━━━━━━━━━━━━━━━━━━━━━
-                :decepcionado: :corazón_partido: Lo siento, perdiste :corazón_partido: :decepcionado:
-                ━━━━━━━━━━━━━━━━━━━━━━━
-                :diamante_azul_pequeño: Número elegido: ${numeroElegido} :1234:
-                :diamante_azul_pequeño: Número ganador: ${this.ganador} :dardo:
-                :dinero_con_alas: Mejor suerte la próxima vez :dinero_con_alas:
-                ━━━━━━━━━━━━━━━━━━━━━━━
-                            `;
+                return `
+                    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    ✨🥳 ¡FELICIDADES! 🥳✨
+                    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    🎉 ¡Has ganado la apuesta!
+                    🔹 Número elegido: ${numeroElegido} 🔢
+                    🔹 Número ganador: ${this.ganador} 🎯
+                    💰 ¡Ganancia total! 💰
+                    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                `;
+            } else {
+                return `
+                    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    😞💔 Lo siento, perdiste 💔😞
+                    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    🔹 Número elegido: ${numeroElegido} 🔢
+                    🔹 Número ganador: ${this.ganador} 🎯
+                    💸 Mejor suerte la próxima vez 💸
+                    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                `;
+            }
         }
     }
-    }
 }
+    
