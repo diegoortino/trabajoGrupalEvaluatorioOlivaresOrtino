@@ -3,6 +3,7 @@ import { Juego } from "./Juego";
 import { ICasino } from "./ICasino";
 
 export class Casino implements ICasino{
+    private static instance: Casino | null = null;
     private nombreCasino: string;
     private estaAbierto: boolean = false;
     private jugadores: Jugador[] = [];
@@ -10,6 +11,13 @@ export class Casino implements ICasino{
 
     constructor(nombreCasino: string) {
         this.nombreCasino = nombreCasino;
+    }
+
+    public static getInstance(nombreCasino: string): Casino {
+        if (!Casino.instance) {
+            Casino.instance = new Casino(nombreCasino);
+        }
+        return Casino.instance;
     }
 
     getNombreCasino(): string {

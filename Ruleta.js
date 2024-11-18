@@ -44,22 +44,7 @@ var Ruleta = /** @class */ (function (_super) {
         }
     };
     Ruleta.prototype.apostarTodo = function (saldo, numeroElegido) {
-        this.ganador = Math.floor(Math.random() * this.numeros);
-        if (numeroElegido >= 0 && numeroElegido < this.numeros) {
-            if (numeroElegido === this.ganador) {
-                this.esGanador = true;
-                var resultado = this.calcularResultado(saldo);
-                return resultado;
-            }
-            else {
-                this.esGanador = false;
-                var resultado = this.calcularResultado(saldo);
-                return resultado;
-            }
-        }
-        else {
-            return 0;
-        }
+        return this.jugar(saldo, numeroElegido);
     };
     Ruleta.prototype.verResultado = function () {
         return this.esGanador;
@@ -74,14 +59,14 @@ var Ruleta = /** @class */ (function (_super) {
     };
     Ruleta.prototype.mensajeResultado = function (resultado, numeroElegido) {
         if (resultado == 0) {
-            return "No ingresaste un numero valido";
+            return "❌ No ingresaste un número válido.";
         }
         else {
             if (this.esGanador == true) {
-                return "\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                :destellos: :gorro_de_fiesta: \u00A1FELICIDADES! :gorro_de_fiesta: :destellos:\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                :cara_de_fiesta: \u00A1Has ganado la apuesta!\n                :diamante_azul_peque\u00F1o: N\u00FAmero elegido: ".concat(numeroElegido, " :1234:\n                :diamante_azul_peque\u00F1o: N\u00FAmero ganador: ").concat(this.ganador, " :dardo:\n                :bolsa_de_dinero: \u00A1Ganancia total! :bolsa_de_dinero:\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                            ");
+                return "\n                    \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                    \u2728\uD83E\uDD73 \u00A1FELICIDADES! \uD83E\uDD73\u2728\n                    \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                    \uD83C\uDF89 \u00A1Has ganado la apuesta!\n                    \uD83D\uDD39 N\u00FAmero elegido: ".concat(numeroElegido, " \uD83D\uDD22\n                    \uD83D\uDD39 N\u00FAmero ganador: ").concat(this.ganador, " \uD83C\uDFAF\n                    \uD83D\uDCB0 \u00A1Ganancia total! \uD83D\uDCB0\n                    \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                ");
             }
             else {
-                return "\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                :decepcionado: :coraz\u00F3n_partido: Lo siento, perdiste :coraz\u00F3n_partido: :decepcionado:\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                :diamante_azul_peque\u00F1o: N\u00FAmero elegido: ".concat(numeroElegido, " :1234:\n                :diamante_azul_peque\u00F1o: N\u00FAmero ganador: ").concat(this.ganador, " :dardo:\n                :dinero_con_alas: Mejor suerte la pr\u00F3xima vez :dinero_con_alas:\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                            ");
+                return "\n                    \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                    \uD83D\uDE1E\uD83D\uDC94 Lo siento, perdiste \uD83D\uDC94\uD83D\uDE1E\n                    \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                    \uD83D\uDD39 N\u00FAmero elegido: ".concat(numeroElegido, " \uD83D\uDD22\n                    \uD83D\uDD39 N\u00FAmero ganador: ").concat(this.ganador, " \uD83C\uDFAF\n                    \uD83D\uDCB8 Mejor suerte la pr\u00F3xima vez \uD83D\uDCB8\n                    \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                ");
             }
         }
     };

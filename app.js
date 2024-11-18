@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -14,8 +13,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Casino = exports.Jugador = exports.Ruleta = exports.Juego = void 0;
 var Juego = /** @class */ (function () {
     function Juego(nombreDelJuego, esGanador) {
         this.nombreDelJuego = nombreDelJuego;
@@ -23,7 +20,6 @@ var Juego = /** @class */ (function () {
     }
     return Juego;
 }());
-exports.Juego = Juego;
 /*export abstract class Tragamonedas extends Juego {
     protected versionDelJuego: string;
     protected apuestaMinima: number;
@@ -165,70 +161,64 @@ var Ruleta = /** @class */ (function (_super) {
     };
     return Ruleta;
 }(Juego));
-exports.Ruleta = Ruleta;
-/*export class CarreraDeCaballos extends Juego {
-    private caballos: string[] = ["Caballo 1 - Margarita", "Caballo 2 - Picante", "Caballo 3 - Tormenta", "Caballo 4 - Petiso"];
-    private caballoElegido: number;
-
-    constructor(){
-        super("Carrera de Caballos", true)
+var CarreraDeCaballos = /** @class */ (function (_super) {
+    __extends(CarreraDeCaballos, _super);
+    function CarreraDeCaballos() {
+        var _this = _super.call(this, "Carrera de Caballos", false) || this;
+        _this.esGanador = false;
+        _this.caballos = ["Caballo 1 - Margarita", "Caballo 2 - Picante", "Caballo 3 - Tormenta", "Caballo 4 - Petiso"];
+        return _this;
     }
-
-    listarCaballos(): number {
-        console.log("Elige un caballo para apostar:");
-        this.caballos.forEach((caballo, index) => {
-            console.log(`${index + 1}. ${caballo}`);
-        });
-
-        const caballoElegido = readlineSync.questionInt("Ingresa el numero del caballo elegido: ");
-        const indice = caballoElegido - 1;
-
-        if (indice >= 0 && indice < this.caballos.length) {
-            return this.caballoElegido = indice;
-        } else {
-            console.log("Selección inválida. Por favor, elige un numero válido.");
-            return this.listarCaballos();
+    CarreraDeCaballos.prototype.listarCaballos = function () {
+        return this.caballos.join("\n");
+    };
+    CarreraDeCaballos.prototype.jugar = function (apuesta, caballoElegido) {
+        this.caballoGanador = Math.floor(Math.random() * this.caballos.length);
+        if (caballoElegido >= 0 && caballoElegido < this.caballos.length) {
+            if (caballoElegido === this.caballoGanador) {
+                this.esGanador = true;
+                var resultado = this.calcularResultado(apuesta);
+                return resultado;
+            }
+            else {
+                this.esGanador = false;
+                var resultado = this.calcularResultado(apuesta);
+                return resultado;
+            }
         }
-    }
-
-    jugar(apuesta: number, caballoElegido: number): string {
-        console.log(`Iniciando la carrera de caballos...`);
-
-        const ganador = Math.floor(Math.random() * this.caballos.length);
-        console.log(`\nEl ganador es ${this.caballos[ganador]}!`);
-
-        if (ganador === caballoElegido) {
-            return `Felicidades, ¡ganaste! El ganador es ${this.caballos[ganador]}.`;
-        } else {
-            return `Lo siento, perdiste. El ganador es ${this.caballos[ganador]}.`;
+        else {
+            return 0;
         }
-    }
-
-    apostarTodo(saldo: number, caballoElegido: number): string{
-        console.log(`Iniciando la carrera de caballos...`);
-
-        const ganador = Math.floor(Math.random() * this.caballos.length);
-        console.log(`\nEl ganador es ${this.caballos[ganador]}!`);
-
-        if (ganador === caballoElegido) {
-            return `Felicidades, ¡ganaste! El ganador es ${this.caballos[ganador]}.`;
-        } else {
-            return `Lo siento, perdiste. El ganador es ${this.caballos[ganador]}.`;
+    };
+    CarreraDeCaballos.prototype.apostarTodo = function (saldo, caballoElegido) {
+        return this.jugar(saldo, caballoElegido);
+    };
+    CarreraDeCaballos.prototype.verResultado = function () {
+        return this.esGanador;
+    };
+    CarreraDeCaballos.prototype.calcularResultado = function (apuesta) {
+        if (this.esGanador === false) {
+            return -apuesta;
         }
-    }
-
-    verResultado(): boolean {
-        throw new Error("Method not implemented.");
-    }
-
-    calcularResultado(apuesta: number): number {
-        throw new Error("Method not implemented.");
-    }
-
-    toString(): string {
-        return this.nombreDelJuego;
-    }
-}*/
+        else {
+            return apuesta * 2;
+        }
+    };
+    CarreraDeCaballos.prototype.mensajeResultado = function (resultado, caballoElegido) {
+        if (resultado == 0) {
+            return "No ingresaste un numero valido";
+        }
+        else {
+            if (this.esGanador == true) {
+                return "\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                :destellos: :gorro_de_fiesta: \u00A1FELICIDADES! :gorro_de_fiesta: :destellos:\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                :cara_de_fiesta: \u00A1Has ganado la apuesta!\n                :diamante_azul_peque\u00F1o: Caballo elegido: ".concat(caballoElegido, " :1234:\n                :diamante_azul_peque\u00F1o: Caballo ganador: ").concat(this.caballos[this.caballoGanador], " :dardo:\n                :bolsa_de_dinero: \u00A1Ganancia de ").concat(this.caballoGanador, "! :bolsa_de_dinero:\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                            ");
+            }
+            else {
+                return "\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                :decepcionado: :coraz\u00F3n_partido: Lo siento, perdiste :coraz\u00F3n_partido: :decepcionado:\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                :diamante_azul_peque\u00F1o: Caballo elegido: ".concat(caballoElegido, " :1234:\n                :diamante_azul_peque\u00F1o: Caballo ganador: ").concat(this.caballos[this.caballoGanador], " :dardo:\n                :dinero_con_alas: Mejor suerte la pr\u00F3xima vez :dinero_con_alas:\n                \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n                            ");
+            }
+        }
+    };
+    return CarreraDeCaballos;
+}(Juego));
 var Jugador = /** @class */ (function () {
     function Jugador(nombre, edad) {
         this.dinero = 1000;
@@ -256,7 +246,6 @@ var Jugador = /** @class */ (function () {
     };
     return Jugador;
 }());
-exports.Jugador = Jugador;
 var Casino = /** @class */ (function () {
     function Casino(nombreCasino) {
         this.estaAbierto = false;
@@ -382,4 +371,3 @@ var Casino = /** @class */ (function () {
     };
     return Casino;
 }());
-exports.Casino = Casino;

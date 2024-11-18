@@ -1,12 +1,9 @@
-import * as readlineSync from "readline-sync";
-
-<<<<<<< HEAD
-interface IJuego {
-    jugar(apuesta: number, parametroAdicional?: any):string;
-=======
-export interface IJuego {
-    jugar(apuesta: number, parametroAdicional?: any): string;
-    apostarTodo(saldo: number, parametroAdicional?: any): string;
+interface ICasino {
+    abrirCasino(): void;
+    cerrarCasino(): void;
+    verMayoriaEdad(jugador:Jugador): boolean;
+    cambiarDineroPorFichas(jugador:Jugador, valor:number): void;
+    cobrarLaCaja(jugador:Jugador, valor:number): void; 
 }
 
 abstract class Juego{
@@ -19,8 +16,11 @@ abstract class Juego{
         this.esGanador = esGanador;
     }
 
-    abstract jugar(apuesta: number, parametroAdicional?: any): string;
-    abstract apostarTodo(saldo: number, parametroAdicional?: any): string;
+    abstract jugar(apuesta: number, parametroAdicional?: any): number;
+    abstract apostarTodo(saldo: number, parametroAdicional?: any): number;
+    abstract verResultado():boolean;
+    abstract calcularResultado(apuesta:number):number;
+    abstract mensajeResultado(resultado:number, parametroAdicional?: any):string;
 }
 
 /*export abstract class Tragamonedas extends Juego {
@@ -97,63 +97,86 @@ export class Variacion2 extends Tragamonedas {
 class Ruleta extends Juego {
     private numeros: number = 38;
     private ganador: number;
+    protected esGanador:boolean = false
 
-<<<<<<< HEAD
-
-    constructor() {
-        super("Ruleta");
-    }
-
-    jugar(apuesta: number, numeroElegido:number,):string {
-        // Validación de la apuesta
-        if (apuesta <= 0) {
-            return "La apuesta debe ser mayor a 0."
-        }
-        // Validación del número elegido
-        if (numeroElegido < 0 || numeroElegido >= this.numeros) {
-            return "El número elegido debe estar entre 0 y 37."
-        }
-        
-        // Generar un número aleatorio entre 0 y 37
-        const numeroGanador = Math.floor(Math.random() * this.numeros);
-        
-        // Imprimir el resultado
-        if (numeroGanador === numeroElegido) {
-            console.log(`¡Felicidades! El número ganador es ${numeroGanador}. ¡Has ganado!`);
-            
-            
-        } else {
-            console.log(`El número ganador es ${numeroGanador}. Mejor suerte la próxima vez.`);
-        }
-        return `Jugando a la ${this.nombreDelJuego} con una apuesta de ${apuesta} al número ${numeroElegido}.`;
-        
-=======
     constructor(){
-        super("Ruleta",true)
+        super("Ruleta",false)
     }
 
-    jugar(apuesta: number, numeroElegido: number): string {
-        throw new Error("Method not implemented.");
->>>>>>> d9b448d6a9981ac25b15523c1e895dca7f4dc870
+    jugar(apuesta: number, numeroElegido: number,): number {
+        this.ganador = Math.floor(Math.random() * this.numeros);
+        if (numeroElegido >= 0 && numeroElegido < this.numeros) {
+            if (numeroElegido === this.ganador) {
+                this.esGanador = true;
+                const resultado = this.calcularResultado(apuesta);
+                return resultado
+            } else {
+                this.esGanador = false;
+                const resultado = this.calcularResultado(apuesta);
+                return resultado
+            }
+        } else {
+            return 0;
+        }
     }
-
-    apostarTodo(saldo: number): string {
-        throw new Error("Method not implemented.");
+    apostarTodo(saldo: number, numeroElegido: number): number {
+        this.ganador = Math.floor(Math.random() * this.numeros);
+        if (numeroElegido >= 0 && numeroElegido < this.numeros) {
+            if (numeroElegido === this.ganador) {
+                this.esGanador = true;
+                const resultado = this.calcularResultado(saldo);
+                return resultado
+            } else {
+                this.esGanador = false;
+                const resultado = this.calcularResultado(saldo);
+                return resultado
+            }
+        } else {
+            return 0;
+        }
     }
     verResultado(): boolean {
-        throw new Error("Method not implemented.");
+        return this.esGanador
     }
     calcularResultado(apuesta: number): number {
-        throw new Error("Method not implemented.");
+        if(this.esGanador === false) {
+            return -apuesta;
+        }else {
+            return apuesta * 37;
+        }
+    }
+    mensajeResultado(resultado: number, numeroElegido: number): string {
+        if (resultado == 0 ) {
+            return "No ingresaste un numero valido";
+        } else {
+            if (this.esGanador == true) {
+            return `
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                :destellos: :gorro_de_fiesta: ¡FELICIDADES! :gorro_de_fiesta: :destellos:
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                :cara_de_fiesta: ¡Has ganado la apuesta!
+                :diamante_azul_pequeño: Número elegido: ${numeroElegido} :1234:
+                :diamante_azul_pequeño: Número ganador: ${this.ganador} :dardo:
+                :bolsa_de_dinero: ¡Ganancia total! :bolsa_de_dinero:
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                            `;
+        } else {
+            return `
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                :decepcionado: :corazón_partido: Lo siento, perdiste :corazón_partido: :decepcionado:
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                :diamante_azul_pequeño: Número elegido: ${numeroElegido} :1234:
+                :diamante_azul_pequeño: Número ganador: ${this.ganador} :dardo:
+                :dinero_con_alas: Mejor suerte la próxima vez :dinero_con_alas:
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                            `;
+        }
+    }
     }
 }
 
-<<<<<<< HEAD
-
 class CarreraDeCaballos extends Juego {
-=======
-export class CarreraDeCaballos extends Juego {
->>>>>>> d9b448d6a9981ac25b15523c1e895dca7f4dc870
+    protected esGanador: boolean = false;
     private caballos: string[] = ["Caballo 1 - Margarita", "Caballo 2 - Picante", "Caballo 3 - Tormenta", "Caballo 4 - Petiso"];
     private caballoGanador: number;
 
