@@ -1,5 +1,8 @@
 import * as readlineSync from "readline-sync";
-import { /*CarreraDeCaballos,*/ Casino, Ruleta, /*Variacion1, Variacion2,*/ Jugador } from "./app";
+import { Casino } from "./Casino";
+import { Jugador } from "./Jugador";
+import { Ruleta } from "./Ruleta";
+import { CarreraDeCaballos } from "./CarreraDeCaballos";
 
 let CasinoMain = new Casino("Lucky 38 de New Vegas");
 let jugadorActual: Jugador | null = null;
@@ -7,7 +10,7 @@ let jugadorActual: Jugador | null = null;
 /*CasinoMain.agregarJuego(Variacion1);
 CasinoMain.agregarJuego(Variacion2);*/
 CasinoMain.agregarJuego(Ruleta);
-/*CasinoMain.agregarJuego(CarreraDeCaballos);*/
+CasinoMain.agregarJuego(CarreraDeCaballos);
 
 function mensajeCentrado(mensaje: string) {
     const anchoDeConsola = process.stdout.columns || 80;
@@ -27,7 +30,7 @@ function registrarse() {
         
         if (registrado) {
             jugadorActual = new Jugador(nombre,edad);
-            console.log();
+            console.clear();
             console.log("Jugador registrado exitosamente en el casino.");
             menuPrincipal();
         } else {
@@ -78,7 +81,7 @@ function menuRuleta() {
 
 function menuCarreraDeCaballos() {
     if (jugadorActual) {
-        mensajeCentrado("Bienvenido a las carreras de caballos");
+        mensajeCentrado("Bienvenido a la Carrera de Caballos");
         console.log("Fichas: " + jugadorActual.getFichas());
         console.log();
         console.log("1. Apostar un monto");
@@ -91,13 +94,32 @@ function menuCarreraDeCaballos() {
             case 1:
                 console.clear();
                 const apuesta = parseInt(readlineSync.question("¡Cuantas fichas desea apostar? ingrese: "));
-                console.log(CasinoMain.jugarJuego(jugadorActual,2,apuesta,2));
+                console.clear();
+                console.log(`
+                        Los caballos disponibles son:
+                        Caballo 1 - Margarita
+                        Caballo 2 - Picante
+                        Caballo 3 - Tormenta
+                        Caballo 4 - Petiso
+                        `);
+                const caballoElegidoCaso1 = parseInt(readlineSync.question("A cual caballo desea apostar? ingrese: ")) - 1;
+                console.clear();
+                console.log(CasinoMain.jugarJuego(jugadorActual, 1, apuesta, caballoElegidoCaso1));
                 menuRuleta()
             case 2:
                 console.clear();
                 const fichas = jugadorActual.getFichas();
-                console.log(CasinoMain.jugarApostandoTodo(jugadorActual,2,fichas,2));
-                menuRuleta()
+                console.log(`
+                    Los caballos disponibles son:
+                    Caballo 1 - Margarita
+                    Caballo 2 - Picante
+                    Caballo 3 - Tormenta
+                    Caballo 4 - Petiso
+                    `);
+                const caballoElegidoCaso2 = parseInt(readlineSync.question("A cual caballo desea apostar? ingrese: ")) - 1;
+                console.clear();
+                console.log(CasinoMain.jugarJuego(jugadorActual, 1, fichas, caballoElegidoCaso2));
+                menuRuleta();
             case 3:
                 console.clear();
                 menuJuegos();
@@ -213,6 +235,7 @@ function menuPrincipal() {
 }
 
 function menuInicial() {
+    console.clear();
     console.log();
     mensajeCentrado("Bienvenido al Casino " + CasinoMain.getNombreCasino());
     console.log();

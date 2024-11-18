@@ -1,4 +1,4 @@
-export interface ICasino {
+interface ICasino {
     abrirCasino(): void;
     cerrarCasino(): void;
     verMayoriaEdad(jugador:Jugador): boolean;
@@ -6,7 +6,7 @@ export interface ICasino {
     cobrarLaCaja(jugador:Jugador, valor:number): void; 
 }
 
-export abstract class Juego{
+abstract class Juego{
     protected nombreDelJuego: string;
     protected esGanador: boolean;
     
@@ -94,7 +94,7 @@ export class Variacion2 extends Tragamonedas {
     }
 }
 */
-export class Ruleta extends Juego {
+class Ruleta extends Juego {
     private numeros: number = 38;
     private ganador: number;
     protected esGanador:boolean = false
@@ -173,73 +173,83 @@ export class Ruleta extends Juego {
         }
     }
     }
-    }
+}
 
-/*export class CarreraDeCaballos extends Juego {
+class CarreraDeCaballos extends Juego {
+    protected esGanador: boolean = false;
     private caballos: string[] = ["Caballo 1 - Margarita", "Caballo 2 - Picante", "Caballo 3 - Tormenta", "Caballo 4 - Petiso"];
-    private caballoElegido: number;
+    private caballoGanador: number;
 
     constructor(){
-        super("Carrera de Caballos", true)
+        super("Carrera de Caballos", false)
     }
 
-    listarCaballos(): number {
-        console.log("Elige un caballo para apostar:");
-        this.caballos.forEach((caballo, index) => {
-            console.log(`${index + 1}. ${caballo}`);
-        });
+    listarCaballos(): string {
+        return this.caballos.join("\n");
+    }
 
-        const caballoElegido = readlineSync.questionInt("Ingresa el numero del caballo elegido: ");
-        const indice = caballoElegido - 1;
-
-        if (indice >= 0 && indice < this.caballos.length) {
-            return this.caballoElegido = indice;
+    jugar(apuesta: number, caballoElegido: number,): number {
+        this.caballoGanador = Math.floor(Math.random() * this.caballos.length);
+        if (caballoElegido >= 0 && caballoElegido < this.caballos.length) {
+            if (caballoElegido === this.caballoGanador) {
+                this.esGanador = true;
+                const resultado = this.calcularResultado(apuesta);
+                return resultado
+            } else {
+                this.esGanador = false;
+                const resultado = this.calcularResultado(apuesta);
+                return resultado
+            }
         } else {
-            console.log("Selección inválida. Por favor, elige un numero válido.");
-            return this.listarCaballos();
+            return 0;
         }
     }
 
-    jugar(apuesta: number, caballoElegido: number): string {
-        console.log(`Iniciando la carrera de caballos...`);
-
-        const ganador = Math.floor(Math.random() * this.caballos.length);
-        console.log(`\nEl ganador es ${this.caballos[ganador]}!`);
-
-        if (ganador === caballoElegido) {
-            return `Felicidades, ¡ganaste! El ganador es ${this.caballos[ganador]}.`;
-        } else {
-            return `Lo siento, perdiste. El ganador es ${this.caballos[ganador]}.`;
-        }
-    }
-
-    apostarTodo(saldo: number, caballoElegido: number): string{
-        console.log(`Iniciando la carrera de caballos...`);
-
-        const ganador = Math.floor(Math.random() * this.caballos.length);
-        console.log(`\nEl ganador es ${this.caballos[ganador]}!`);
-
-        if (ganador === caballoElegido) {
-            return `Felicidades, ¡ganaste! El ganador es ${this.caballos[ganador]}.`;
-        } else {
-            return `Lo siento, perdiste. El ganador es ${this.caballos[ganador]}.`;
-        }
+    apostarTodo(saldo: number, caballoElegido: number): number {
+        return this.jugar(saldo, caballoElegido);
     }
 
     verResultado(): boolean {
-        throw new Error("Method not implemented.");
+        return this.esGanador
     }
-
     calcularResultado(apuesta: number): number {
-        throw new Error("Method not implemented.");
+        if(this.esGanador === false) {
+            return -apuesta;
+        }else {
+            return apuesta * 2;
+        }
     }
-
-    toString(): string {
-        return this.nombreDelJuego;
+    mensajeResultado(resultado: number, caballoElegido: number): string {
+        if (resultado == 0 ) {
+            return "No ingresaste un numero valido";
+        } else {
+            if (this.esGanador == true) {
+            return `
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                :destellos: :gorro_de_fiesta: ¡FELICIDADES! :gorro_de_fiesta: :destellos:
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                :cara_de_fiesta: ¡Has ganado la apuesta!
+                :diamante_azul_pequeño: Caballo elegido: ${caballoElegido} :1234:
+                :diamante_azul_pequeño: Caballo ganador: ${this.caballos[this.caballoGanador]} :dardo:
+                :bolsa_de_dinero: ¡Ganancia de ${this.caballoGanador}! :bolsa_de_dinero:
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                            `;
+        } else {
+            return `
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                :decepcionado: :corazón_partido: Lo siento, perdiste :corazón_partido: :decepcionado:
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                :diamante_azul_pequeño: Caballo elegido: ${caballoElegido} :1234:
+                :diamante_azul_pequeño: Caballo ganador: ${this.caballos[this.caballoGanador]} :dardo:
+                :dinero_con_alas: Mejor suerte la próxima vez :dinero_con_alas:
+                ━━━━━━━━━━━━━━━━━━━━━━━
+                            `;
+        }
     }
-}*/
+    }
+}
 
-export class Jugador {
+class Jugador {
     private nombre: string;
     private edad: number;
     private dinero: number = 1000;
@@ -275,7 +285,7 @@ export class Jugador {
     }
 }
 
-export class Casino implements ICasino{
+class Casino implements ICasino{
     private nombreCasino: string;
     private estaAbierto: boolean = false;
     private jugadores: Jugador[] = [];
