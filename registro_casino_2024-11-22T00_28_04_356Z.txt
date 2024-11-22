@@ -1,0 +1,8 @@
+[2024-11-22T00:26:31.269Z] El casino Lucky 38 de New Vegas abrio sus puertas
+[2024-11-22T00:26:37.608Z] Jugador registrado:Diego, Edad: 25
+[2024-11-22T00:27:00.598Z] El jugador Diego jugó a la carrera de caballos,  aposto al caballo numero 1 500 fichas.
+[2024-11-22T00:27:09.037Z] El jugador Diego compro 500 fichas
+[2024-11-22T00:27:27.406Z] El jugador Diego jugó a la carrera de caballos,  aposto al caballo numero 2 250 fichas.
+[2024-11-22T00:27:53.378Z] El jugador Diego jugó a la carrera de caballos todo su saldo,  aposto al caballo numero 1 1000 fichas.
+[2024-11-22T00:28:04.355Z] El jugador Diego se retiro del casino con 0 fichas y con 500 dolares
+[2024-11-22T00:28:04.356Z] El casino Lucky 38 de New Vegas cerró sus puertas
