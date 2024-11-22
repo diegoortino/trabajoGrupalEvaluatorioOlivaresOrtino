@@ -1,7 +1,6 @@
 import { Jugador } from "./Jugador";
 import { Juego } from "./Juego";
 import { ICasino } from "./ICasino";
-import { Tragamonedas } from "./Tragamonedas";
 
 export class Casino implements ICasino{
     private static instance: Casino | null = null;

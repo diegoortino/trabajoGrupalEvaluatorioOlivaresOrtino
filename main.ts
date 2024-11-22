@@ -123,7 +123,7 @@ function menuCarreraDeCaballos() {
                     `);
                 const caballoElegidoCaso2 = parseInt(readlineSync.question("A cual caballo desea apostar? ingrese: ")) - 1;
                 console.clear();
-                console.log(CasinoMain.jugarJuego(jugadorActual, 1, fichas, caballoElegidoCaso2));
+                console.log(CasinoMain.jugarJuego(jugadorActual, 3, fichas, caballoElegidoCaso2));
                 menuRuleta();
             case 3:
                 console.clear();
