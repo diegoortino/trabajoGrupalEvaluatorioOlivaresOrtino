@@ -35,7 +35,7 @@ export class Ruleta extends Juego {
         if(this.esGanador === false) {
             return -apuesta;
         }else {
-            return apuesta * 37;
+            return apuesta * 38;
         }
     }
     mensajeResultado(resultado: number, numeroElegido: number): string {
