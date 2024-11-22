@@ -9,8 +9,8 @@ import { CarreraDeCaballos } from "./CarreraDeCaballos";
 let CasinoMain = new Casino("Lucky 38 de New Vegas");
 let jugadorActual: Jugador | null = null;
 
-/*CasinoMain.agregarJuego(Variacion1);
-CasinoMain.agregarJuego(Variacion2);*/
+CasinoMain.agregarJuego(Variacion1);
+CasinoMain.agregarJuego(Variacion2);
 CasinoMain.agregarJuego(Ruleta);
 CasinoMain.agregarJuego(CarreraDeCaballos);
 
