@@ -9,8 +9,8 @@ let CasinoMain = new Casino("Lucky 38 de New Vegas");
 let jugadorActual: Jugador | null = null;
 let registroDeActividad: string[] = [];
 
-/*CasinoMain.agregarJuego(Variacion1);
-CasinoMain.agregarJuego(Variacion2);*/
+CasinoMain.agregarJuego(Variacion1);
+CasinoMain.agregarJuego(Variacion2);
 CasinoMain.agregarJuego(Ruleta);
 CasinoMain.agregarJuego(CarreraDeCaballos);
 
