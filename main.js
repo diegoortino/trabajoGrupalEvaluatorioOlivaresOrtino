@@ -55,14 +55,14 @@ function menuRuleta() {
                 console.log("Recorda que la ruleta tiene los numeros del 0 al 37");
                 var numeroElegido = parseInt(readlineSync.question("Cual es el numero al que desea apostar? ingrese: "));
                 console.clear();
-                console.log(CasinoMain.jugarJuego(jugadorActual, 2, apuesta, numeroElegido));
+                console.log(CasinoMain.jugarJuego(jugadorActual, 0, apuesta, numeroElegido));
                 menuRuleta();
             case 2:
                 console.clear();
                 var fichas = jugadorActual.getFichas();
                 var numeroElegidoApostandoTodo = parseInt(readlineSync.question("Cual es el numero al que desea apostar? ingrese: "));
                 console.clear();
-                console.log(CasinoMain.jugarApostandoTodo(jugadorActual, 2, fichas, numeroElegidoApostandoTodo));
+                console.log(CasinoMain.jugarApostandoTodo(jugadorActual, 0, fichas, numeroElegidoApostandoTodo));
                 menuRuleta();
             case 3:
                 console.clear();
