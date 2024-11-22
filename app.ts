@@ -23,7 +23,7 @@ abstract class Juego{
     abstract mensajeResultado(resultado:number, parametroAdicional?: any):string;
 }
 
-/*export abstract class Tragamonedas extends Juego {
+export abstract class Tragamonedas extends Juego {
     protected versionDelJuego: string;
     protected apuestaMinima: number;
     protected tipoDeRodillo: string;
@@ -125,9 +125,13 @@ export class Variacion1 extends Tragamonedas {
     }
 
 
-    toString(): string {
-        return this.nombreDelJuego;
 
+    mensajeResultado(apuesta: number): string {
+        if (this.esGanador == true) {
+            return "🎉 ¡Ganaste! 🎉 Resultado: ${this.resultadoRodillos.join(' ')}. Jugaste a ${this.nombreDelJuego} con una apuesta de ${apuesta} 💵.";
+        } else {
+            return "😞 Perdiste. 😞 Resultado: ${this.resultadoRodillos.join(' ')}. Jugaste a ${this.nombreDelJuego} con una apuesta de ${apuesta} 💵.";
+        }
     }
 
 }
@@ -157,7 +161,7 @@ export class Variacion2 extends Tragamonedas {
         return this.nombreDelJuego;
     }
 }
-*/
+
 /*class Ruleta extends Juego {
 
 class Ruleta extends Juego {

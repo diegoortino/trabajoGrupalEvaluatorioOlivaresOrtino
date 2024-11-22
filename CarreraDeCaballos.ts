@@ -56,7 +56,7 @@ export class CarreraDeCaballos extends Juego {
                 🎊 ¡Has ganado la apuesta! 🎊
                 🐎 Caballo elegido: ${this.caballos[caballoElegido]} 🐎
                 🏆 Caballo ganador: ${this.caballos[this.caballoGanador]} 🏆
-                💰 ¡Ganancia de ${this.caballoGanador}! 💰
+                💰 ¡Ganancia de ${resultado}! 💰
                 ━━━━━━━━━━━━━━━━━━━━━━━
                             `;
         } else {

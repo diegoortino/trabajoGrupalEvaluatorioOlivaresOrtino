@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import * as readlineSync from "readline-sync";
 import { Casino } from "./Casino";
 import { Jugador } from "./Jugador";
@@ -8,11 +9,17 @@ import { CarreraDeCaballos } from "./CarreraDeCaballos";
 
 let CasinoMain = new Casino("Lucky 38 de New Vegas");
 let jugadorActual: Jugador | null = null;
+let registroDeActividad: string[] = [];
 
 CasinoMain.agregarJuego(Variacion1);
 CasinoMain.agregarJuego(Variacion2);
 CasinoMain.agregarJuego(Ruleta);
 CasinoMain.agregarJuego(CarreraDeCaballos);
+
+function registrarActividad(mensaje: string) {
+    const timestamp = new Date().toISOString();
+    registroDeActividad.push(`[${timestamp}] ${mensaje}`);
+}
 
 function mensajeCentrado(mensaje: string) {
     const anchoDeConsola = process.stdout.columns || 80;
@@ -34,6 +41,7 @@ function registrarse() {
             jugadorActual = new Jugador(nombre, edad);
             console.clear();
             console.log("Jugador registrado exitosamente en el casino.");
+            registrarActividad("Un nuevo jugador se ha registrado en el casino: " + nombre +", Edad: "+ edad+" años.");
             menuPrincipal();
         } else {
             console.log("Registro fallido. Solo las personas con mayoria de edad pueden apostar.");
@@ -109,24 +117,24 @@ function menuCarreraDeCaballos() {
                         `);
                 const caballoElegidoCaso1 = parseInt(readlineSync.question("A cual caballo desea apostar? ingrese: ")) - 1;
                 console.clear();
-
-                console.log(CasinoMain.jugarJuego(jugadorActual, 3, apuesta, caballoElegidoCaso1));
-
-                menuRuleta()
+                console.log(CasinoMain.jugarJuego(jugadorActual, 1, apuesta, caballoElegidoCaso1));
+                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó a la carrera de caballos,  aposto al caballo numero " + (caballoElegidoCaso1 +1)+ " "+ apuesta + " fichas.");
+                menuCarreraDeCaballos()
             case 2:
                 console.clear();
                 const fichas = jugadorActual.getFichas();
                 console.log(`
-                    Los caballos disponibles son:
-                    Caballo 1 - Margarita
-                    Caballo 2 - Picante
-                    Caballo 3 - Tormenta
-                    Caballo 4 - Petiso
-                    `);
+                        Los caballos disponibles son:
+                        Caballo 1 - Margarita
+                        Caballo 2 - Picante
+                        Caballo 3 - Tormenta
+                        Caballo 4 - Petiso
+                        `);
                 const caballoElegidoCaso2 = parseInt(readlineSync.question("A cual caballo desea apostar? ingrese: ")) - 1;
                 console.clear();
                 console.log(CasinoMain.jugarJuego(jugadorActual, 1, fichas, caballoElegidoCaso2));
-                menuRuleta();
+                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó a la carrera de caballos todo su saldo,  aposto al caballo numero " + (caballoElegidoCaso2 +1) +" "+ fichas + " fichas.");
+                menuCarreraDeCaballos();
             case 3:
                 console.clear();
                 menuJuegos();
@@ -335,25 +343,30 @@ function menuPrincipal() {
                 break;
             case 2:
                 console.clear();
+                console.log("Su dinero actual es de: " + jugadorActual.getDinero()+"$")
                 console.log("¿Cuantas fichas desea comprar?");
                 const fichasAComprar = parseInt(readlineSync.question("Ingrese: "));
                 CasinoMain.cambiarDineroPorFichas(jugadorActual,fichasAComprar);
                 console.clear();
                 console.log();
                 console.log("Operacion Realizada");
+                registrarActividad("El jugador "+ jugadorActual.getNombre() + " compro "+ fichasAComprar + " fichas");
                 menuPrincipal();
                 break;
             case 3:
                 console.clear();
+                console.log("Sus fichas actuales son: "+ jugadorActual.getFichas())
                 console.log("¿Cuantas fichas desea cambiar?");
                 const fichasAVender = parseInt(readlineSync.question("Ingrese: "));
                 CasinoMain.cobrarLaCaja(jugadorActual,fichasAVender);
                 console.clear();
                 console.log();
                 console.log("Operacion Realizada");
+                registrarActividad("El jugador "+ jugadorActual.getNombre() + " vendio "+ fichasAVender + " fichas");
                 menuPrincipal();
                 break;
             case 4:
+                registrarActividad("El jugador "+jugadorActual.getNombre() +" se retiro del casino con " + jugadorActual.getFichas() + " fichas y con " + jugadorActual.getDinero() + " dolares");
                 terminarJuego();
                 break;
             default:
@@ -396,6 +409,7 @@ function menuInicial() {
 
 function iniciarJuego() {
     CasinoMain.abrirCasino();
+    registrarActividad("El casino "+ CasinoMain.getNombreCasino() + " abrio sus puertas");
     menuInicial();
 }
 
@@ -403,6 +417,15 @@ function terminarJuego() {
     console.clear();
     console.log();
     console.log("Esperamos verte pronto");
+    registrarActividad("El casino "+ CasinoMain.getNombreCasino() + " cerró sus puertas");
+
+
+    const contenidoRegistro = registroDeActividad.join("\n");
+    const nombreArchivo = `registro_casino_${new Date().toISOString().replace(/[:.]/g, "_")}.txt`;
+
+    fs.writeFileSync(nombreArchivo, contenidoRegistro, "utf-8");
+    console.log(`Registro de actividad guardado en: ${nombreArchivo}`);
+
     CasinoMain.cerrarCasino();
     process.exit();
 }
