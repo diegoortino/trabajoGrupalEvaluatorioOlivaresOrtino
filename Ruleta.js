@@ -54,7 +54,7 @@ var Ruleta = /** @class */ (function (_super) {
             return -apuesta;
         }
         else {
-            return apuesta * 37;
+            return apuesta * 38;
         }
     };
     Ruleta.prototype.mensajeResultado = function (resultado, numeroElegido) {

@@ -68,14 +68,16 @@ function menuRuleta() {
                 console.log("Recorda que la ruleta tiene los numeros del 0 al 37")
                 const numeroElegido = parseInt(readlineSync.question("Cual es el numero al que desea apostar? ingrese: "))
                 console.clear();
-                console.log(CasinoMain.jugarJuego(jugadorActual, 0, apuesta, numeroElegido));
+                console.log(CasinoMain.jugarJuego(jugadorActual, 2, apuesta, numeroElegido));
+                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó a la Ruleta, eligió el numero " + (numeroElegido)+ " apostando "+ apuesta + " fichas.");
                 menuRuleta()
             case 2:
                 console.clear();
                 const fichas = jugadorActual.getFichas();
                 const numeroElegidoApostandoTodo = parseInt(readlineSync.question("Cual es el numero al que desea apostar? ingrese: "))
                 console.clear();
-                console.log(CasinoMain.jugarApostandoTodo(jugadorActual,0,fichas,numeroElegidoApostandoTodo));
+                console.log(CasinoMain.jugarApostandoTodo(jugadorActual,2,fichas,numeroElegidoApostandoTodo));
+                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó a la Ruleta, eligió el numero " + (numeroElegidoApostandoTodo )+ " apostando "+ fichas + " fichas.");
                 menuRuleta()
             case 3:
                 console.clear();
@@ -117,7 +119,7 @@ function menuCarreraDeCaballos() {
                         `);
                 const caballoElegidoCaso1 = parseInt(readlineSync.question("A cual caballo desea apostar? ingrese: ")) - 1;
                 console.clear();
-                console.log(CasinoMain.jugarJuego(jugadorActual, 1, apuesta, caballoElegidoCaso1));
+                console.log(CasinoMain.jugarJuego(jugadorActual, 3, apuesta, caballoElegidoCaso1));
                 registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó a la carrera de caballos,  aposto al caballo numero " + (caballoElegidoCaso1 +1)+ " "+ apuesta + " fichas.");
                 menuCarreraDeCaballos()
             case 2:
@@ -132,7 +134,7 @@ function menuCarreraDeCaballos() {
                         `);
                 const caballoElegidoCaso2 = parseInt(readlineSync.question("A cual caballo desea apostar? ingrese: ")) - 1;
                 console.clear();
-                console.log(CasinoMain.jugarJuego(jugadorActual, 1, fichas, caballoElegidoCaso2));
+                console.log(CasinoMain.jugarJuego(jugadorActual, 3, fichas, caballoElegidoCaso2));
                 registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó a la carrera de caballos todo su saldo,  aposto al caballo numero " + (caballoElegidoCaso2 +1) +" "+ fichas + " fichas.");
                 menuCarreraDeCaballos();
             case 3:
@@ -141,7 +143,7 @@ function menuCarreraDeCaballos() {
             default:
                 console.clear();
                 console.log("Opción inválida. Seleccione nuevamente");
-                menuRuleta();
+                menuCarreraDeCaballos();
                 break;
         }
     } else {
@@ -210,15 +212,18 @@ function menuFiestaFrutal() {
                 console.clear();
                 console.log(apuesta);
                 console.log(CasinoMain.jugarJuego(jugadorActual, 0, apuesta));
-                readlineSync.question("Presiona cualquier tecla para continuar... ");
-
+                readlineSync.question("Presiona enter para continuar");
+                console.clear();
+                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó en el tragamonedas Fiesta Frutal, su apuesta fue de " + apuesta + " fichas.");
                 menuFiestaFrutal()
 
             case 2:
                 const fichas = jugadorActual.getFichas();
                 console.clear();
-                console.log(CasinoMain.jugarJuego(jugadorActual, 0, fichas));
-                readlineSync.question("Presiona cualquier tecla para continuar... ");
+                console.log(CasinoMain.jugarApostandoTodo(jugadorActual, 0, fichas));
+                readlineSync.question("Presiona enter para continuar");
+                console.clear();
+                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó en el tragamonedas Fiesta Frutal apostando todo su saldo, su apuesta fue de " + fichas + " fichas.");
                 menuFiestaFrutal()
 
             case 3:
@@ -268,14 +273,18 @@ function menuFortunaDiamantes() {
                 const apuesta = parseInt(readlineSync.question("¡Cuantas fichas desea apostar? ingrese: "));
                 console.clear();
                 console.log(CasinoMain.jugarJuego(jugadorActual, 1, apuesta));
-                readlineSync.question("Presiona cualquier tecla para continuar... ");
+                readlineSync.question("Presiona enter para continuar");
+                console.clear();
+                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó en el tragamonedas Fortuna De Diamantes, su apuesta fue de " + apuesta + " fichas.");
                 menuFortunaDiamantes()
 
             case 2:
                 const fichas = jugadorActual.getFichas();
                 console.clear();
-                console.log(CasinoMain.jugarJuego(jugadorActual, 1, fichas));
-                readlineSync.question("Presiona cualquier tecla para continuar... ");
+                console.log(CasinoMain.jugarApostandoTodo(jugadorActual, 1, fichas));
+                readlineSync.question("Presiona enter para continuar");
+                console.clear();
+                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó en el tragamonedas Fortuna De Diamantes apostando todo su saldo, su apuesta fue de " + fichas + " fichas.");
                 menuFortunaDiamantes()
             case 3:
                 console.clear();
