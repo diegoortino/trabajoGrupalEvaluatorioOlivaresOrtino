@@ -1,7 +1,6 @@
 import { Jugador } from "./Jugador";
 import { Juego } from "./Juego";
 import { ICasino } from "./ICasino";
-import { Tragamonedas } from "./Tragamonedas";
 
 export class Casino implements ICasino{
     private static instance: Casino | null = null;
@@ -102,8 +101,11 @@ export class Casino implements ICasino{
         if (numeroDeJuego >= 0 && numeroDeJuego < this.juegos.length) {
             if (jugador.getFichas() >= apuesta && apuesta > 0){
             const juegoSeleccionado = this.juegos[numeroDeJuego];
-            let resultado = juegoSeleccionado.jugar(apuesta,parametroAdicional);       
+
+            let resultado = juegoSeleccionado.jugar(apuesta,parametroAdicional);
             if (resultado == 0) {return juegoSeleccionado.mensajeResultado(resultado,parametroAdicional)
+
+
             }else{
                 this.modificarFichas(jugador, resultado);
                 return juegoSeleccionado.mensajeResultado(resultado ,parametroAdicional);

@@ -23,7 +23,7 @@ abstract class Juego{
     abstract mensajeResultado(resultado:number, parametroAdicional?: any):string;
 }
 
-export abstract class Tragamonedas extends Juego {
+/*export abstract class Tragamonedas extends Juego {
     protected versionDelJuego: string;
     protected apuestaMinima: number;
     protected tipoDeRodillo: string;
@@ -125,12 +125,9 @@ export class Variacion1 extends Tragamonedas {
     }
 
 
-    mensajeResultado(apuesta: number): string {
-        if (this.esGanador == true) {
-            return "🎉 ¡Ganaste! 🎉 Resultado: ${this.resultadoRodillos.join(' ')}. Jugaste a ${this.nombreDelJuego} con una apuesta de ${apuesta} 💵.";
-        } else {
-            return "😞 Perdiste. 😞 Resultado: ${this.resultadoRodillos.join(' ')}. Jugaste a ${this.nombreDelJuego} con una apuesta de ${apuesta} 💵.";
-        }
+    toString(): string {
+        return this.nombreDelJuego;
+
     }
 
 }
@@ -155,10 +152,12 @@ export class Variacion2 extends Tragamonedas {
         throw new Error("Method not implemented.");
     }
 
+
     toString(): string {
         return this.nombreDelJuego;
     }
 }
+*/
 
 class Ruleta extends Juego {
     private numeros: number = 38;
@@ -288,6 +287,7 @@ class CarreraDeCaballos extends Juego {
     mensajeResultado(resultado: number, caballoElegido: number): string {
         if (resultado == 0 ) {
             return "No ingresaste un numero valido";
+
         } else {
             if (this.esGanador == true) {
             return `
@@ -301,6 +301,7 @@ class CarreraDeCaballos extends Juego {
                 ━━━━━━━━━━━━━━━━━━━━━━━
                             `;
         } else {
+
             return `
                 ━━━━━━━━━━━━━━━━━━━━━━━
                 :decepcionado: :corazón_partido: Lo siento, perdiste :corazón_partido: :decepcionado:
@@ -336,6 +337,7 @@ class Jugador {
 
     getDinero(): number {
         return this.dinero;
+
     }
 
     getFichas(): number {

@@ -9,8 +9,8 @@ import { CarreraDeCaballos } from "./CarreraDeCaballos";
 let CasinoMain = new Casino("Lucky 38 de New Vegas");
 let jugadorActual: Jugador | null = null;
 
-CasinoMain.agregarJuego(Variacion1);
-CasinoMain.agregarJuego(Variacion2);
+/*CasinoMain.agregarJuego(Variacion1);
+CasinoMain.agregarJuego(Variacion2);*/
 CasinoMain.agregarJuego(Ruleta);
 CasinoMain.agregarJuego(CarreraDeCaballos);
 
@@ -109,7 +109,9 @@ function menuCarreraDeCaballos() {
                         `);
                 const caballoElegidoCaso1 = parseInt(readlineSync.question("A cual caballo desea apostar? ingrese: ")) - 1;
                 console.clear();
+
                 console.log(CasinoMain.jugarJuego(jugadorActual, 3, apuesta, caballoElegidoCaso1));
+
                 menuRuleta()
             case 2:
                 console.clear();
@@ -141,6 +143,7 @@ function menuCarreraDeCaballos() {
 }
 
 function menuTragamonedas() {
+
     mensajeCentrado("Bienbenido A Las Tragamonedas");
     console.log();
     console.log("1. Fiesta Frutal");
@@ -220,10 +223,12 @@ function menuFiestaFrutal() {
                 menuRuleta();
                 break;
         }
+
     } else {
         console.log("Error: No hay un jugador registrado.");
         terminarJuego();
     }
+
 
 }
 
@@ -275,7 +280,6 @@ function menuFortunaDiamantes() {
         }
     }
 }
-
 
 function menuJuegos() {
     mensajeCentrado("Juegos disponibles en el casino:");

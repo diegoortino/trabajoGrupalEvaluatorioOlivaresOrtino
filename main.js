@@ -4,6 +4,7 @@ var readlineSync = require("readline-sync");
 var Casino_1 = require("./Casino");
 var Jugador_1 = require("./Jugador");
 var Ruleta_1 = require("./Ruleta");
+
 var Variacion1_1 = require("./Variacion1");
 var Variacion2_1 = require("./Variacion2");
 var CarreraDeCaballos_1 = require("./CarreraDeCaballos");
@@ -11,6 +12,7 @@ var CasinoMain = new Casino_1.Casino("Lucky 38 de New Vegas");
 var jugadorActual = null;
 CasinoMain.agregarJuego(Variacion1_1.Variacion1);
 CasinoMain.agregarJuego(Variacion2_1.Variacion2);
+
 CasinoMain.agregarJuego(Ruleta_1.Ruleta);
 CasinoMain.agregarJuego(CarreraDeCaballos_1.CarreraDeCaballos);
 function mensajeCentrado(mensaje) {
@@ -94,7 +96,9 @@ function menuCarreraDeCaballos() {
                 console.log("\n                        Los caballos disponibles son:\n                        Caballo 1 - Margarita\n                        Caballo 2 - Picante\n                        Caballo 3 - Tormenta\n                        Caballo 4 - Petiso\n                        ");
                 var caballoElegidoCaso1 = parseInt(readlineSync.question("A cual caballo desea apostar? ingrese: ")) - 1;
                 console.clear();
+
                 console.log(CasinoMain.jugarJuego(jugadorActual, 3, apuesta, caballoElegidoCaso1));
+
                 menuRuleta();
             case 2:
                 console.clear();
@@ -120,6 +124,7 @@ function menuCarreraDeCaballos() {
     }
 }
 function menuTragamonedas() {
+
     mensajeCentrado("Bienbenido A Las Tragamonedas");
     console.log();
     console.log("1. Fiesta Frutal");
@@ -181,12 +186,14 @@ function menuFiestaFrutal() {
                 menuRuleta();
                 break;
         }
+
     }
     else {
         console.log("Error: No hay un jugador registrado.");
         terminarJuego();
     }
 }
+
 function menuFortunaDiamantes() {
     if (jugadorActual) {
         mensajeCentrado("Bienvenido a Fortuna de Diamantes");
@@ -221,6 +228,7 @@ function menuFortunaDiamantes() {
         }
     }
 }
+
 function menuJuegos() {
     mensajeCentrado("Juegos disponibles en el casino:");
     console.log();
