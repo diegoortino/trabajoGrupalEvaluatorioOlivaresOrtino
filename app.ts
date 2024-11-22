@@ -27,6 +27,7 @@ abstract class Juego{
     protected versionDelJuego: string;
     protected apuestaMinima: number;
     protected tipoDeRodillo: string;
+    protected resultadoRodillos : string[];
 
 
     constructor(nombreDelJuego: string, esGanador: boolean, versionDelJuego: string, apuestaMinima: number, tipoDeRodillo: string) {
@@ -34,37 +35,99 @@ abstract class Juego{
         this.versionDelJuego = versionDelJuego;
         this.apuestaMinima = apuestaMinima;
         this.tipoDeRodillo = tipoDeRodillo;
+        
     }
-    abstract jugar(apuesta: number): string;
-    abstract apostarTodo(saldo: number): string;
+    abstract jugar(apuesta: number): number;
+    abstract apostarTodo(saldo: number): number;
     abstract verResultado():boolean;
-    abstract calcularResultado(apuesta:number):number
+    abstract calcularResultado(apuesta:number):number;
+    abstract mensajeResultado(resultado: number, parametroAdicional?: any): string 
+
+     
+
 }
 
 export class Variacion1 extends Tragamonedas {
+ 
     
     constructor() {
         super("Tragamonedas Variacion 1",true, "V1", 10, "Madera");
     }
 
     verResultado(): boolean {
-        throw new Error("Method not implemented.");
+        return this.esGanador;
     }
 
+    
+
+
+
+    jugar(apuesta: number): number {
+
+        const rodillos = ['🍒', '🍋', '🔔', '⭐', '🍊'];
+        this.resultadoRodillos = [
+            rodillos[Math.floor(Math.random() * rodillos.length)],
+            rodillos[Math.floor(Math.random() * rodillos.length)],
+            rodillos[Math.floor(Math.random() * rodillos.length)]
+        ];
+        
+
+        const combinacionGanadora = this.resultadoRodillos.every(symbol => symbol === '🍒') || 
+                                    this.resultadoRodillos.every(symbol => symbol === '🍋') || 
+                                    this.resultadoRodillos.every(symbol => symbol === '🔔');
+
+        if (combinacionGanadora) {
+
+            this.esGanador = true;
+            const resultado = this.calcularResultado(apuesta);
+            return resultado;
+        } else {
+            this.esGanador = false;
+            return -apuesta;
+        }
+       
+    }
+
+
+    apostarTodo(saldo: number): number {
+        const rodillos = ['🍒', '🍋', '🔔', '⭐', '🍊'];
+        const resultadoRodillos = [
+            rodillos[Math.floor(Math.random() * rodillos.length)],
+            rodillos[Math.floor(Math.random() * rodillos.length)],
+            rodillos[Math.floor(Math.random() * rodillos.length)]
+        ];
+
+        const combinacionGanadora = resultadoRodillos.every(symbol => symbol === '🍒') || 
+                                     resultadoRodillos.every(symbol => symbol === '🍋') || 
+                                     resultadoRodillos.every(symbol => symbol === '🔔');
+
+        if (combinacionGanadora) {
+
+            this.esGanador = true;
+            const resultado = this.calcularResultado(saldo);
+            return resultado;
+        } else {
+            this.esGanador = false;
+            return -saldo;
+        }
+    }
     calcularResultado(apuesta: number): number {
-        throw new Error("Method not implemented.");
+        if (this.resultadoRodillos.every(symbol => symbol === '🍒')) {
+            return apuesta * 10;
+
+        } else if (this.resultadoRodillos.every(symbol => symbol === '🍋')) {
+            return apuesta * 5;
+
+        } else if (this.resultadoRodillos.every(symbol => symbol === '🔔')) {
+            return apuesta * 2;
+        }
+        return 0;
     }
 
-    jugar(apuesta: number): string {
-        throw new Error("Method not implemented.");
-    }
-
-    apostarTodo(saldo: number): string {
-        throw new Error("Method not implemented.");
-    }
 
     toString(): string {
         return this.nombreDelJuego;
+
     }
 
 }
@@ -89,11 +152,13 @@ export class Variacion2 extends Tragamonedas {
         throw new Error("Method not implemented.");
     }
 
+
     toString(): string {
         return this.nombreDelJuego;
     }
 }
 */
+
 class Ruleta extends Juego {
     private numeros: number = 38;
     private ganador: number;
@@ -222,6 +287,7 @@ class CarreraDeCaballos extends Juego {
     mensajeResultado(resultado: number, caballoElegido: number): string {
         if (resultado == 0 ) {
             return "No ingresaste un numero valido";
+
         } else {
             if (this.esGanador == true) {
             return `
@@ -235,6 +301,7 @@ class CarreraDeCaballos extends Juego {
                 ━━━━━━━━━━━━━━━━━━━━━━━
                             `;
         } else {
+
             return `
                 ━━━━━━━━━━━━━━━━━━━━━━━
                 :decepcionado: :corazón_partido: Lo siento, perdiste :corazón_partido: :decepcionado:
@@ -270,6 +337,7 @@ class Jugador {
 
     getDinero(): number {
         return this.dinero;
+
     }
 
     getFichas(): number {
