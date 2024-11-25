@@ -29,6 +29,11 @@ function registrarse() {
     var registrado = false;
     while (!registrado) {
         var nombre = readlineSync.question('Nombre: ');
+        var nombreValido = /^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$/.test(nombre);
+        if (!nombreValido) {
+            console.log("El nombre contiene caracteres inválidos. Solo se permiten letras y espacios, sin números.");
+            continue;
+        }
         var edad = readlineSync.questionInt('Edad: ');
         registrado = CasinoMain.agregarJugador(new Jugador_1.Jugador(nombre, edad));
         if (registrado) {
@@ -39,7 +44,7 @@ function registrarse() {
             menuPrincipal();
         }
         else {
-            console.log("Registro fallido. Solo las personas con mayoria de edad pueden apostar.");
+            console.log("Registro fallido. Solo las personas con mayoría de edad pueden apostar.");
             console.log();
         }
     }
@@ -57,11 +62,20 @@ function menuRuleta() {
             case 1:
                 console.clear();
                 var apuesta = parseInt(readlineSync.question("¡Cuantas fichas desea apostar? ingrese: "));
-                console.log("Recorda que la ruleta tiene los numeros del 0 al 37");
-                var numeroElegido = parseInt(readlineSync.question("Cual es el numero al que desea apostar? ingrese: "));
-                console.clear();
-                console.log(CasinoMain.jugarJuego(jugadorActual, 2, apuesta, numeroElegido));
-                registrarActividad("El jugador " + jugadorActual.getNombre() + " jugó a la Ruleta, eligió el numero " + (numeroElegido) + " apostando " + apuesta + " fichas.");
+                if (apuesta > 0) {
+                    console.clear();
+                    console.log("Recorda que la ruleta tiene los numeros del 0 al 37");
+                    var numeroElegido = parseInt(readlineSync.question("Cual es el numero al que desea apostar? ingrese: "));
+                    console.clear();
+                    console.log(CasinoMain.jugarJuego(jugadorActual, 2, apuesta, numeroElegido));
+                    registrarActividad("El jugador " + jugadorActual.getNombre() + " jugó a la Ruleta, apostando " + apuesta + " fichas.");
+                    menuRuleta();
+                }
+                else {
+                    console.clear();
+                    console.log("Debe ingresar un número positivo.");
+                    menuRuleta();
+                }
                 menuRuleta();
             case 2:
                 console.clear();
@@ -294,24 +308,36 @@ function menuPrincipal() {
                 console.log("Su dinero actual es de: " + jugadorActual.getDinero() + "$");
                 console.log("¿Cuantas fichas desea comprar?");
                 var fichasAComprar = parseInt(readlineSync.question("Ingrese: "));
-                CasinoMain.cambiarDineroPorFichas(jugadorActual, fichasAComprar);
                 console.clear();
-                console.log();
-                console.log("Operacion Realizada");
-                registrarActividad("El jugador " + jugadorActual.getNombre() + " compro " + fichasAComprar + " fichas");
-                menuPrincipal();
+                if (CasinoMain.cambiarDineroPorFichas(jugadorActual, fichasAComprar)) {
+                    console.log("Fichas compradas exitosamente!");
+                    console.log();
+                    registrarActividad("El jugador " + jugadorActual.getNombre() + " compró " + fichasAComprar + " fichas");
+                    menuPrincipal();
+                }
+                else {
+                    console.log("Ingrese un numero valido.");
+                    console.log();
+                    menuPrincipal();
+                }
                 break;
             case 3:
                 console.clear();
                 console.log("Sus fichas actuales son: " + jugadorActual.getFichas());
                 console.log("¿Cuantas fichas desea cambiar?");
                 var fichasAVender = parseInt(readlineSync.question("Ingrese: "));
-                CasinoMain.cobrarLaCaja(jugadorActual, fichasAVender);
                 console.clear();
-                console.log();
-                console.log("Operacion Realizada");
-                registrarActividad("El jugador " + jugadorActual.getNombre() + " vendio " + fichasAVender + " fichas");
-                menuPrincipal();
+                if (CasinoMain.cobrarLaCaja(jugadorActual, fichasAVender)) {
+                    console.log("Fichas vendidas exitosamente!");
+                    console.log();
+                    registrarActividad("El jugador " + jugadorActual.getNombre() + " compró " + fichasAVender + " fichas");
+                    menuPrincipal();
+                }
+                else {
+                    console.log("Ingrese un numero valido.");
+                    console.log();
+                    menuPrincipal();
+                }
                 break;
             case 4:
                 registrarActividad("El jugador " + jugadorActual.getNombre() + " se retiro del casino con " + jugadorActual.getFichas() + " fichas y con " + jugadorActual.getDinero() + " dolares");
