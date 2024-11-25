@@ -51,10 +51,12 @@ var Casino = /** @class */ (function () {
             fichasDelJugador += valor;
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return true;
         }
         else {
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return false;
         }
     };
     Casino.prototype.cobrarLaCaja = function (jugador, valor) {
@@ -65,10 +67,12 @@ var Casino = /** @class */ (function () {
             fichasDelJugador -= valor;
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return true;
         }
         else {
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return false;
         }
     };
     Casino.prototype.agregarJugador = function (jugador) {

@@ -48,33 +48,40 @@ export class Casino implements ICasino{
         }
     }
 
-    cambiarDineroPorFichas (jugador:Jugador, valor:number): void {    
+
+    cambiarDineroPorFichas (jugador:Jugador, valor:number): boolean {    
         let dineroDelJugador: number = jugador.getDinero();
         let fichasDelJugador: number = jugador.getFichas();
+        
 
         if (valor > 0 && dineroDelJugador >= valor) {
             dineroDelJugador -= valor;
             fichasDelJugador += valor;
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return true;
         } else {
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
-        }
+            return false;
+        }      
     }
 
-    cobrarLaCaja (jugador:Jugador, valor:number) : void  {
+    cobrarLaCaja (jugador:Jugador, valor:number) : boolean  {
         let dineroDelJugador: number = jugador.getDinero();
         let fichasDelJugador: number = jugador.getFichas();
+        
 
         if (valor > 0 && fichasDelJugador >= valor) {
             dineroDelJugador += valor;
             fichasDelJugador -= valor;
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return true;
         } else {
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return false;
         }
     }
 
