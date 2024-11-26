@@ -13,22 +13,25 @@ export class CarreraDeCaballos extends Juego {
         return this.caballos.join("\n");
     }
 
-    jugar(apuesta: number, caballoElegido: number,): number {
+    jugar(apuesta: number, caballoElegido: number): number {
+        const indiceCaballoElegido = caballoElegido - 1;
+    
         this.caballoGanador = Math.floor(Math.random() * this.caballos.length);
-        if (caballoElegido >= 0 && caballoElegido < this.caballos.length) {
-            if (caballoElegido === this.caballoGanador) {
+    
+        if (indiceCaballoElegido >= 0 && indiceCaballoElegido < this.caballos.length) {
+            if (indiceCaballoElegido === this.caballoGanador) {
                 this.esGanador = true;
-                const resultado = this.calcularResultado(apuesta);
-                return resultado
             } else {
                 this.esGanador = false;
-                const resultado = this.calcularResultado(apuesta);
-                return resultado
             }
+    
+            const resultado = this.calcularResultado(apuesta);
+            return resultado;
         } else {
             return 0;
         }
     }
+    
 
     apostarTodo(saldo: number, caballoElegido: number): number {
         return this.jugar(saldo, caballoElegido);
@@ -54,7 +57,7 @@ export class CarreraDeCaballos extends Juego {
                 🎉🎉 ¡FELICIDADES! 🎉🎉
                 ━━━━━━━━━━━━━━━━━━━━━━━
                 🎊 ¡Has ganado la apuesta! 🎊
-                🐎 Caballo elegido: ${this.caballos[caballoElegido]} 🐎
+                🐎 Caballo elegido: ${this.caballos[caballoElegido-1]} 🐎
                 🏆 Caballo ganador: ${this.caballos[this.caballoGanador]} 🏆
                 💰 ¡Ganancia de ${resultado}! 💰
                 ━━━━━━━━━━━━━━━━━━━━━━━
@@ -64,7 +67,7 @@ export class CarreraDeCaballos extends Juego {
                 ━━━━━━━━━━━━━━━━━━━━━━━
                 😞💔 Lo siento, perdiste 😞💔
                 ━━━━━━━━━━━━━━━━━━━━━━━
-                🐎 Caballo elegido: ${this.caballos[caballoElegido]} 🐎
+                🐎 Caballo elegido: ${this.caballos[caballoElegido-1]} 🐎
                 🏆 Caballo ganador: ${this.caballos[this.caballoGanador]} 🏆
                 💸 Mejor suerte la próxima vez 💸
                 ━━━━━━━━━━━━━━━━━━━━━━━

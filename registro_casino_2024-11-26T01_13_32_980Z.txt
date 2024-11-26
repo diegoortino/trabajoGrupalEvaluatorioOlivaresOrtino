@@ -1,9 +1,0 @@
-[2024-11-26T01:11:14.861Z] El casino Lucky 38 de New Vegas abrio sus puertas
-[2024-11-26T01:11:18.310Z] Un nuevo jugador se ha registrado en el casino: 1, Edad: 25 años.
-[2024-11-26T01:11:24.600Z] El jugador 1 compro 1000 fichas
-[2024-11-26T01:12:20.423Z] El jugador 1 jugó a Ruleta, apostando 250 fichas.
-[2024-11-26T01:12:34.407Z] El jugador 1 jugó a Carrera de Caballos, apostando 250 fichas.
-[2024-11-26T01:12:52.511Z] El jugador 1 jugó a Fiesta Frutal, apostando 250 fichas.
-[2024-11-26T01:13:26.436Z] El jugador 1 jugó a Fortuna de Diamantes, apostando 250 fichas.
-[2024-11-26T01:13:32.978Z] El jugador 1 se retiro del casino con 0 fichas y con 0 dolares
-[2024-11-26T01:13:32.980Z] El casino Lucky 38 de New Vegas cerró sus puertas
