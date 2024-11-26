@@ -6,6 +6,7 @@ import { Ruleta } from "./Ruleta";
 import { Variacion1 } from "./Variacion1";
 import { Variacion2 } from "./Variacion2";
 import { CarreraDeCaballos } from "./CarreraDeCaballos";
+import { Juego } from "./Juego";
 
 let CasinoMain = new Casino("Lucky 38 de New Vegas");
 let jugadorActual: Jugador | null = null;
@@ -50,6 +51,106 @@ function registrarse() {
     }
 }
 
+function jugarJuego(jugadorActual: Jugador, juegoElegido: number, opcion: number) {
+    let juegos = [
+        { 
+            numeroDeJuego: 0,
+            nombreDelJuego: 'Fiesta Frutal',
+            menuDelJuego: menuFiestaFrutal,
+            mensajeDelJuego: `
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                ✨✨ Combinaciones Ganadoras ✨✨
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            🎰 '🍒🍒🍒' - ¡Cereza Triple!   X 10
+            🎰 '🍋🍋🍋' - ¡Limonada Triple! X 5
+            🎰 '🍊🍊🍊' - ¡Naranja Triple!  X 2
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            `
+        },
+        {   
+            numeroDeJuego: 1,
+            nombreDelJuego: 'Fortuna de Diamantes',
+            menuDelJuego: menuFortunaDiamantes,
+            mensajeDelJuego: `
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    ✨✨ Combinaciones Ganadoras ✨✨
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            🎰 '💎💎💎' - ¡Diamante Triple!         X 10
+            🎰 '🍀🍀🍀' - ¡Trébol de la Suerte!    X 5
+            🎰 '⭐⭐⭐'   - ¡Estrella Radiante!      X 2
+            🎰 '🎁🎁🎁' - ¡Premio Especial! 🎁 Tirada GRATIS
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            ¡Haz girar los rodillos y prueba tu suerte! 🎰
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            `
+        },
+        { 
+            numeroDeJuego: 2,
+            nombreDelJuego: 'Ruleta',
+            menuDelJuego: menuRuleta,
+            mensajeDelJuego: `
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    🎡 Reglas del Juego 🎡
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            La ruleta tiene los números del 0 al 37. 
+            Elige un número para apostar y buena suerte. 🍀
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            `,
+            preguntaParametroOpcional: "¿Cuál es el número al que desea apostar? Ingrese: "
+        },
+        { 
+            numeroDeJuego: 3,
+            nombreDelJuego: 'Carrera de Caballos',
+            menuDelJuego: menuCarreraDeCaballos,
+            mensajeDelJuego: `
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    🏇 Carrera de Caballos 🏇
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            Los caballos disponibles son:
+            🐎 Caballo 1 - Margarita
+            🐎 Caballo 2 - Picante
+            🐎 Caballo 3 - Tormenta
+            🐎 Caballo 4 - Petiso
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            `,
+            preguntaParametroOpcional: "¿A cuál caballo desea apostar? Ingrese: "
+        }
+    ];
+
+    let juegoEncontrado = juegos.find(juego => juego.numeroDeJuego === juegoElegido);
+
+    if (juegoEncontrado && opcion === 1) {
+        mensajeCentrado(juegoEncontrado.mensajeDelJuego);
+        const apuesta = parseInt(readlineSync.question("¿Cuántas fichas desea apostar? Ingrese: "));
+        console.clear();
+        if (juegoElegido === 2 || juegoElegido === 3) {
+            mensajeCentrado(juegoEncontrado.mensajeDelJuego);
+            const parametroOpcional: number = parseInt(readlineSync.question(juegoEncontrado.preguntaParametroOpcional));
+            mensajeCentrado(CasinoMain.jugarJuego(jugadorActual, juegoEncontrado.numeroDeJuego, apuesta, parametroOpcional));
+        } else {
+            mensajeCentrado(CasinoMain.jugarJuego(jugadorActual, juegoEncontrado.numeroDeJuego, apuesta));
+        }
+        readlineSync.question("Presiona Enter para continuar");
+        console.clear();
+        registrarActividad(`El jugador ${jugadorActual.getNombre()} jugó a ${juegoEncontrado.nombreDelJuego}, apostando ${apuesta} fichas.`);
+        juegoEncontrado.menuDelJuego();
+    } else if (juegoEncontrado && opcion === 2) {
+        mensajeCentrado(juegoEncontrado.mensajeDelJuego);
+        if (juegoElegido === 2 || juegoElegido === 3) {
+            const parametroOpcional: number = parseInt(readlineSync.question(juegoEncontrado.preguntaParametroOpcional));
+            mensajeCentrado(CasinoMain.jugarApostandoTodo(jugadorActual, juegoEncontrado.numeroDeJuego, jugadorActual.getFichas(), parametroOpcional));
+        } else {
+            mensajeCentrado(CasinoMain.jugarApostandoTodo(jugadorActual, juegoEncontrado.numeroDeJuego, jugadorActual.getFichas()));
+        }
+        readlineSync.question("Presiona Enter para continuar");
+        console.clear();
+        registrarActividad(`El jugador ${jugadorActual.getNombre()} jugó a ${juegoEncontrado.nombreDelJuego}, apostando ${jugadorActual.getFichas()} fichas.`);
+        juegoEncontrado.menuDelJuego();
+    } else {
+        console.log("❌ Juego no encontrado. Por favor, selecciona un número válido.");
+    }
+}
+
 function menuRuleta() {
     if (jugadorActual) {
         mensajeCentrado("Bienvenido a la Ruleta");
@@ -58,32 +159,26 @@ function menuRuleta() {
         console.log("1. Apostar un monto");
         console.log("2. Apostar todo");
         console.log("3. Volver al menu de juegos");
+        console.log("4. Volver al menu principal");
+
 
         
         const opcion = readlineSync.questionInt("Ingrese: ");
+        console.clear();
         switch (opcion) {
             case 1:
-                console.clear();
-                const apuesta = parseInt(readlineSync.question("¡Cuantas fichas desea apostar? ingrese: "));
-                console.log("Recorda que la ruleta tiene los numeros del 0 al 37")
-                const numeroElegido = parseInt(readlineSync.question("Cual es el numero al que desea apostar? ingrese: "))
-                console.clear();
-                console.log(CasinoMain.jugarJuego(jugadorActual, 2, apuesta, numeroElegido));
-                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó a la Ruleta, eligió el numero " + (numeroElegido)+ " apostando "+ apuesta + " fichas.");
-                menuRuleta()
+                jugarJuego(jugadorActual, 2, opcion);
+                break;
             case 2:
-                console.clear();
-                const fichas = jugadorActual.getFichas();
-                const numeroElegidoApostandoTodo = parseInt(readlineSync.question("Cual es el numero al que desea apostar? ingrese: "))
-                console.clear();
-                console.log(CasinoMain.jugarApostandoTodo(jugadorActual,2,fichas,numeroElegidoApostandoTodo));
-                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó a la Ruleta, eligió el numero " + (numeroElegidoApostandoTodo )+ " apostando "+ fichas + " fichas.");
-                menuRuleta()
+                jugarJuego(jugadorActual, 2, opcion);
+                break;
             case 3:
-                console.clear();
                 menuJuegos();
+                break;
+            case 4:
+                menuPrincipal();
+                break;
             default:
-                console.clear();
                 console.log("Opción inválida. Seleccione nuevamente");
                 menuRuleta();
                 break;
@@ -102,48 +197,28 @@ function menuCarreraDeCaballos() {
         console.log("1. Apostar un monto");
         console.log("2. Apostar todo");
         console.log("3. Volver al menu de juegos");
+        console.log("4. Volver al menu principal");
+
 
         
         const opcion = readlineSync.questionInt("Ingrese: ");
+        console.clear();
         switch (opcion) {
             case 1:
-                console.clear();
-                const apuesta = parseInt(readlineSync.question("¡Cuantas fichas desea apostar? ingrese: "));
-                console.clear();
-                console.log(`
-                        Los caballos disponibles son:
-                        Caballo 1 - Margarita
-                        Caballo 2 - Picante
-                        Caballo 3 - Tormenta
-                        Caballo 4 - Petiso
-                        `);
-                const caballoElegidoCaso1 = parseInt(readlineSync.question("A cual caballo desea apostar? ingrese: ")) - 1;
-                console.clear();
-                console.log(CasinoMain.jugarJuego(jugadorActual, 3, apuesta, caballoElegidoCaso1));
-                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó a la carrera de caballos,  aposto al caballo numero " + (caballoElegidoCaso1 +1)+ " "+ apuesta + " fichas.");
-                menuCarreraDeCaballos()
+                jugarJuego(jugadorActual, 3, opcion);
+                break;
             case 2:
-                console.clear();
-                const fichas = jugadorActual.getFichas();
-                console.log(`
-                        Los caballos disponibles son:
-                        Caballo 1 - Margarita
-                        Caballo 2 - Picante
-                        Caballo 3 - Tormenta
-                        Caballo 4 - Petiso
-                        `);
-                const caballoElegidoCaso2 = parseInt(readlineSync.question("A cual caballo desea apostar? ingrese: ")) - 1;
-                console.clear();
-                console.log(CasinoMain.jugarJuego(jugadorActual, 3, fichas, caballoElegidoCaso2));
-                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó a la carrera de caballos todo su saldo,  aposto al caballo numero " + (caballoElegidoCaso2 +1) +" "+ fichas + " fichas.");
-                menuCarreraDeCaballos();
+                jugarJuego(jugadorActual, 3, opcion);
+                break;
             case 3:
-                console.clear();
                 menuJuegos();
+                break;
+            case 4:
+                menuPrincipal();
+                break;
             default:
-                console.clear();
                 console.log("Opción inválida. Seleccione nuevamente");
-                menuCarreraDeCaballos();
+                menuRuleta();
                 break;
         }
     } else {
@@ -188,61 +263,38 @@ function menuFiestaFrutal() {
 
     mensajeCentrado("Bienvenido a Fiesta Frutal")
     console.log("Fichas: " + jugadorActual.getFichas());
-    console.log();
-    console.log("1. Apostar un monto");
-    console.log("2. Apostar todo");
-    console.log("3. Volver al menu de juegos");;
+        console.log();
+        console.log("1. Apostar un monto");
+        console.log("2. Apostar todo");
+        console.log("3. Volver al menu de juegos");
+        console.log("4. Volver al menu principal");
+
 
         
         const opcion = readlineSync.questionInt("Ingrese: ");
-
         console.clear();
-        console.log(`
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                ✨✨ Combinaciones Ganadoras ✨✨
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            🎰 '🍒🍒🍒' - ¡Cereza Triple!   X 10
-            🎰 '🍋🍋🍋' - ¡Limonada Triple! X 5
-            🎰 '🍊🍊🍊' - ¡Naranja Triple!  X 2
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            `);
         switch (opcion) {
             case 1:
-                const apuesta = parseInt(readlineSync.question("¡Cuantas fichas desea apostar? ingrese: "));
-                console.clear();
-                console.log(apuesta);
-                console.log(CasinoMain.jugarJuego(jugadorActual, 0, apuesta));
-                readlineSync.question("Presiona enter para continuar");
-                console.clear();
-                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó en el tragamonedas Fiesta Frutal, su apuesta fue de " + apuesta + " fichas.");
-                menuFiestaFrutal()
-
+                jugarJuego(jugadorActual, 0, opcion);
+                break;
             case 2:
-                const fichas = jugadorActual.getFichas();
-                console.clear();
-                console.log(CasinoMain.jugarApostandoTodo(jugadorActual, 0, fichas));
-                readlineSync.question("Presiona enter para continuar");
-                console.clear();
-                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó en el tragamonedas Fiesta Frutal apostando todo su saldo, su apuesta fue de " + fichas + " fichas.");
-                menuFiestaFrutal()
-
+                jugarJuego(jugadorActual, 0, opcion);
+                break;
             case 3:
-                console.clear();
                 menuJuegos();
-
+                break;
+            case 4:
+                menuPrincipal();
+                break;
             default:
-                console.clear();
                 console.log("Opción inválida. Seleccione nuevamente");
                 menuRuleta();
                 break;
         }
-
     } else {
         console.log("Error: No hay un jugador registrado.");
         terminarJuego();
     }
-
-
 }
 
 function menuFortunaDiamantes() {
@@ -253,48 +305,33 @@ function menuFortunaDiamantes() {
         console.log("1. Apostar un monto");
         console.log("2. Apostar todo");
         console.log("3. Volver al menu de juegos");
+        console.log("4. Volver al menu principal");
+
+
         
         const opcion = readlineSync.questionInt("Ingrese: ");
         console.clear();
-        console.log(`
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                    ✨✨ Combinaciones Ganadoras ✨✨
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            🎰 '💎💎💎' - ¡Diamante Triple! X 10
-            🎰 '🍀🍀🍀' - ¡Trébol de la Suerte! X 5
-            🎰 '⭐⭐⭐' - ¡Estrella Radiante! X 2
-            🎰 '🎁🎁🎁' - ¡Premio Especial! Tirada GRATIS
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            ¡Haz girar los rodillos y prueba tu suerte! 🎰
-            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            `);
         switch (opcion) {
             case 1:
-                const apuesta = parseInt(readlineSync.question("¡Cuantas fichas desea apostar? ingrese: "));
-                console.clear();
-                console.log(CasinoMain.jugarJuego(jugadorActual, 1, apuesta));
-                readlineSync.question("Presiona enter para continuar");
-                console.clear();
-                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó en el tragamonedas Fortuna De Diamantes, su apuesta fue de " + apuesta + " fichas.");
-                menuFortunaDiamantes()
-
+                jugarJuego(jugadorActual, 1, opcion);
+                break;
             case 2:
-                const fichas = jugadorActual.getFichas();
-                console.clear();
-                console.log(CasinoMain.jugarApostandoTodo(jugadorActual, 1, fichas));
-                readlineSync.question("Presiona enter para continuar");
-                console.clear();
-                registrarActividad("El jugador "+ jugadorActual.getNombre() + " jugó en el tragamonedas Fortuna De Diamantes apostando todo su saldo, su apuesta fue de " + fichas + " fichas.");
-                menuFortunaDiamantes()
+                jugarJuego(jugadorActual, 1, opcion);
+                break;
             case 3:
-                console.clear();
                 menuJuegos();
-
+                break;
+            case 4:
+                menuPrincipal();
+                break;
             default:
-                console.clear();
                 console.log("Opción inválida. Seleccione nuevamente");
                 menuRuleta();
+                break;
         }
+    } else {
+        console.log("Error: No hay un jugador registrado.");
+        terminarJuego();
     }
 }
 
