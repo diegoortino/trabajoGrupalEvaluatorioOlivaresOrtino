@@ -104,10 +104,10 @@ function jugarJuego(jugadorActual, juegoElegido) {
                 mensajeCentrado(juegoEncontrado.mensajeDelJuego);
                 if (juegoElegido === 2 || juegoElegido === 3) {
                     var parametroOpcional = parseInt(readlineSync.question(juegoEncontrado.preguntaParametroOpcional));
-                    mensajeCentrado(CasinoMain.jugarApostandoTodo(jugadorActual, juegoEncontrado.numeroDeJuego, jugadorActual.getFichas(), parametroOpcional));
+                    mensajeCentrado(CasinoMain.jugarJuego(jugadorActual, juegoEncontrado.numeroDeJuego, jugadorActual.getFichas(), parametroOpcional));
                 }
                 else {
-                    mensajeCentrado(CasinoMain.jugarApostandoTodo(jugadorActual, juegoEncontrado.numeroDeJuego, jugadorActual.getFichas()));
+                    mensajeCentrado(CasinoMain.jugarJuego(jugadorActual, juegoEncontrado.numeroDeJuego, jugadorActual.getFichas()));
                 }
                 readlineSync.question("Presiona Enter para continuar");
                 console.clear();

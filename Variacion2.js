@@ -46,9 +46,6 @@ var Variacion2 = /** @class */ (function (_super) {
             return -apuesta;
         }
     };
-    Variacion2.prototype.apostarTodo = function (saldo) {
-        return this.jugar(saldo);
-    };
     Variacion2.prototype.calcularResultado = function (apuesta) {
         if (this.resultadoRodillos.every(function (symbol) { return symbol === '💎'; })) {
             return apuesta * 10;

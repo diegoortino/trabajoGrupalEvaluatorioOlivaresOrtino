@@ -37,10 +37,6 @@ export class Variacion2 extends Tragamonedas {
 
     }
 
-
-    apostarTodo(saldo: number): number {
-        return this.jugar(saldo);
-    }
     calcularResultado(apuesta: number): number {
         if (this.resultadoRodillos.every(symbol => symbol === '💎')) {
             return apuesta * 10;
@@ -56,8 +52,6 @@ export class Variacion2 extends Tragamonedas {
         
     }
     
-
-
     mensajeResultado(apuesta: number): string {
         if (this.esGanador) {
             if (this.resultadoRodillos.every(symbol => symbol === '💎')) {

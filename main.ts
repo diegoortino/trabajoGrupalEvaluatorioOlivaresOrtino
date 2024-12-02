@@ -17,9 +17,11 @@ CasinoMain.agregarJuego(Variacion2);
 CasinoMain.agregarJuego(Ruleta);
 CasinoMain.agregarJuego(CarreraDeCaballos);
 
-function registrarActividad(mensaje: string) {
-    const timestamp = new Date().toISOString();
-    registroDeActividad.push(`[${timestamp}] ${mensaje}`);
+function mensajeError(mensaje:string){
+    console.clear()
+    console.log(mensaje)
+    readlineSync.question("Presiona Enter para continuar");
+    console.clear();
 }
 
 function mensajeCentrado(mensaje: string) {
@@ -27,28 +29,6 @@ function mensajeCentrado(mensaje: string) {
     const padding = Math.max(0, Math.floor((anchoDeConsola - mensaje.length) / 2));
     const espacios = Array(padding).fill(' ').join('');
     console.log(espacios + mensaje);
-}
-
-function registrarse() {
-    let registrado : boolean = false;
-
-    while (!registrado) {
-        const nombre = readlineSync.question('Nombre: ');
-        const edad = readlineSync.questionInt('Edad: ');
-        
-        registrado = CasinoMain.agregarJugador(new Jugador(nombre, edad));
-        
-        if (registrado) {
-            jugadorActual = new Jugador(nombre, edad);
-            console.clear();
-            console.log("Jugador registrado exitosamente en el casino.");
-            registrarActividad("Un nuevo jugador se ha registrado en el casino: " + nombre +", Edad: "+ edad+" años.");
-            menuPrincipal();
-        } else {
-            console.log("Registro fallido. Solo las personas con mayoria de edad pueden apostar.");
-            console.log();
-        }
-    }
 }
 
 function jugarJuego(jugadorActual: Jugador, juegoElegido: number) {
@@ -95,7 +75,7 @@ function jugarJuego(jugadorActual: Jugador, juegoElegido: number) {
             Elige un número para apostar y buena suerte. 🍀
             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             `,
-            preguntaParametroOpcional: `¿Cuál es el número al que desea apostar? Ingrese: `
+            preguntaParametroOpcional: `Cual es el número al que desea apostar? Ingrese: `
         },
 
         { 
@@ -112,7 +92,7 @@ function jugarJuego(jugadorActual: Jugador, juegoElegido: number) {
             🐎 Caballo 4 - Petiso
             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             `,
-            preguntaParametroOpcional: `¿A cuál caballo desea apostar? Ingrese: `
+            preguntaParametroOpcional: `A cual caballo desea apostar? Ingrese: `
         }
     ];
 
@@ -133,11 +113,11 @@ function jugarJuego(jugadorActual: Jugador, juegoElegido: number) {
         console.clear();
         switch (opcion) {
             case 1:
-                mensajeCentrado(juegoEncontrado.mensajeDelJuego);
-                const apuesta = parseInt(readlineSync.question(`¿Cuántas fichas desea apostar? Ingrese: `));
+                const apuesta = parseInt(readlineSync.question(`Cuantas fichas desea apostar? Ingrese: `));
                 console.clear();
                 if (juegoElegido === 2 || juegoElegido === 3) {
                     if (juegoEncontrado.preguntaParametroOpcional) {
+                        mensajeCentrado(juegoEncontrado.mensajeDelJuego);
                         const parametroOpcional: number = parseInt(readlineSync.question(juegoEncontrado.preguntaParametroOpcional));
                         mensajeCentrado(CasinoMain.jugarJuego(jugadorActual, juegoEncontrado.numeroDeJuego, apuesta, parametroOpcional));
                     }
@@ -150,12 +130,12 @@ function jugarJuego(jugadorActual: Jugador, juegoElegido: number) {
                 jugarJuego(jugadorActual,juegoElegido);
                 break;
             case 2:
-                mensajeCentrado(juegoEncontrado.mensajeDelJuego);
                 if (juegoElegido === 2 || juegoElegido === 3) {
+                    mensajeCentrado(juegoEncontrado.mensajeDelJuego);
                     const parametroOpcional: number = parseInt(readlineSync.question(juegoEncontrado.preguntaParametroOpcional));
-                    mensajeCentrado(CasinoMain.jugarApostandoTodo(jugadorActual, juegoEncontrado.numeroDeJuego, jugadorActual.getFichas(), parametroOpcional));
+                    mensajeCentrado(CasinoMain.jugarJuego(jugadorActual, juegoEncontrado.numeroDeJuego, jugadorActual.getFichas(), parametroOpcional));
                 } else {
-                    mensajeCentrado(CasinoMain.jugarApostandoTodo(jugadorActual, juegoEncontrado.numeroDeJuego, jugadorActual.getFichas()));
+                    mensajeCentrado(CasinoMain.jugarJuego(jugadorActual, juegoEncontrado.numeroDeJuego, jugadorActual.getFichas()));
                 }
                 readlineSync.question("Presiona Enter para continuar");
                 console.clear();
@@ -179,71 +159,58 @@ function jugarJuego(jugadorActual: Jugador, juegoElegido: number) {
     }
 }
 
-function menuJuegos() {
-    if (jugadorActual) {
-    mensajeCentrado("Juegos disponibles en el casino:");
+function iniciarJuego() {
+    CasinoMain.abrirCasino();
+    registrarActividad("El casino "+ CasinoMain.getNombreCasino() + " abrio sus puertas");
+    menuInicial();
+}
+
+function menuInicial() {
+    console.clear();
     console.log();
-    console.log("1. Tragamonedas");
-    console.log("2. Ruleta");
-    console.log("3. Carrera de Caballos");
-    console.log("4. Volver al menú principal");
+    mensajeCentrado("Bienvenido al Casino " + CasinoMain.getNombreCasino());
+    console.log();
+    console.log("1. Ingresar");
+    console.log("2. Salir");
+    console.log("");
 
     const opcion = readlineSync.questionInt("Ingrese: ");
     switch (opcion) {
         case 1:
-            mensajeCentrado("Bienvenido A Las Tragamonedas");
-            console.log();
-            console.log("1. Fiesta Frutal");
-            console.log("2. Fortuna de Diamantes");
-            console.log("3. Volver al menú de Juegos");
-
-            const subOpcion = readlineSync.questionInt("Ingrese: ");
-            switch (subOpcion) {
-                case 1:
-                    console.clear();
-                    jugarJuego(jugadorActual,0);
-                    break;
-                case 2:
-                    console.clear();
-                    jugarJuego(jugadorActual,1);
-                    break;
-                case 3:
-                    console.clear();
-                    menuJuegos();
-                    break;
-                default:
-                    console.clear();
-                    console.log("Opción inválida. Seleccione nuevamente");
-                    menuJuegos();
-                    break;
-            }
+            console.clear();
+            registrarse();
             break;
-
         case 2:
             console.clear();
-            jugarJuego(jugadorActual,2);
-            break;
-
-        case 3:
-            console.clear();
-            jugarJuego(jugadorActual,3);
-            break;
-
-        case 4:
-            console.clear();
-            menuPrincipal();
-            return;
-
+            terminarJuego();
         default:
             console.clear();
             console.log("Opción inválida. Seleccione nuevamente");
-            menuJuegos();
+            menuInicial();
             break;
     }
-    } else {
-    console.log("Error: No hay un jugador registrado.");
-    terminarJuego();
 }
+
+function registrarse() {
+    let registrado : boolean = false;
+
+    while (!registrado) {
+        const nombre = readlineSync.question('Nombre: ');
+        const edad = readlineSync.questionInt('Edad: ');
+        
+        registrado = CasinoMain.agregarJugador(new Jugador(nombre, edad));
+        
+        if (registrado) {
+            jugadorActual = new Jugador(nombre, edad);
+            console.clear();
+            console.log("Jugador registrado exitosamente en el casino.");
+            registrarActividad("Un nuevo jugador se ha registrado en el casino: " + nombre +", Edad: "+ edad+" años.");
+            menuPrincipal();
+        } else {
+            console.log("Registro fallido. Solo las personas con mayoria de edad pueden apostar.");
+            console.log();
+        }
+    }
 }
 
 function menuPrincipal() {
@@ -304,36 +271,77 @@ function menuPrincipal() {
     }
 }
 
-function menuInicial() {
-    console.clear();
+function menuJuegos() {
+    if (jugadorActual) {
+    mensajeCentrado("Juegos disponibles en el casino:");
     console.log();
-    mensajeCentrado("Bienvenido al Casino " + CasinoMain.getNombreCasino());
-    console.log();
-    console.log("1. Ingresar");
-    console.log("2. Salir");
-    console.log("");
+    console.log("1. Tragamonedas");
+    console.log("2. Ruleta");
+    console.log("3. Carrera de Caballos");
+    console.log("4. Volver al menú principal");
 
     const opcion = readlineSync.questionInt("Ingrese: ");
     switch (opcion) {
         case 1:
             console.clear();
-            registrarse();
+            mensajeCentrado("Bienvenido A Las Tragamonedas");
+            console.log();
+            console.log("1. Fiesta Frutal");
+            console.log("2. Fortuna de Diamantes");
+            console.log("3. Volver al menú de Juegos");
+
+            const subOpcion = readlineSync.questionInt("Ingrese: ");
+            switch (subOpcion) {
+                case 1:
+                    console.clear();
+                    jugarJuego(jugadorActual,0);
+                    break;
+                case 2:
+                    console.clear();
+                    jugarJuego(jugadorActual,1);
+                    break;
+                case 3:
+                    console.clear();
+                    menuJuegos();
+                    break;
+                default:
+                    console.clear();
+                    console.log("Opción inválida. Seleccione nuevamente");
+                    menuJuegos();
+                    break;
+            }
             break;
+
         case 2:
             console.clear();
-            terminarJuego();
+            jugarJuego(jugadorActual,2);
+            break;
+
+        case 3:
+            console.clear();
+            jugarJuego(jugadorActual,3);
+            break;
+
+        case 4:
+            console.clear();
+            menuPrincipal();
+            return;
+
         default:
             console.clear();
             console.log("Opción inválida. Seleccione nuevamente");
-            menuInicial();
+            menuJuegos();
             break;
     }
+    } else {
+    console.log("Error: No hay un jugador registrado.");
+    terminarJuego();
+}
 }
 
-function iniciarJuego() {
-    CasinoMain.abrirCasino();
-    registrarActividad("El casino "+ CasinoMain.getNombreCasino() + " abrio sus puertas");
-    menuInicial();
+function registrarActividad(mensaje: string) {
+    const timestamp = new Date().toISOString();
+    registroDeActividad.push(`[${timestamp}] ${mensaje}`);
 }
 
 function terminarJuego() {

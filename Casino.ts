@@ -113,25 +113,7 @@ export class Casino implements ICasino{
         } else { return "No tenes suficientes fichas"
             }
     } else{
-        return "a"
-    } 
-    }
-    
-    jugarApostandoTodo(jugador:Jugador, numeroDeJuego:number,fichas: number, parametroAdicional?: any): string{
-        if (numeroDeJuego >= 0 && numeroDeJuego < this.juegos.length) {
-            if (jugador.getFichas() >= fichas && fichas > 0){
-            const juegoSeleccionado = this.juegos[numeroDeJuego];
-            let resultado = juegoSeleccionado.jugar(fichas, parametroAdicional);
-            if (resultado == 0) {return juegoSeleccionado.mensajeResultado(resultado,parametroAdicional)
-
-            }else{
-                this.modificarFichas(jugador, resultado);
-                return juegoSeleccionado.mensajeResultado(resultado ,parametroAdicional);
-            }
-        } else { return "No tenes suficientes fichas"
-            }
-    } else{
-        return "a"
+        return "Revisar errores: este mensaje no deberia retornarnse"
     } 
     }
 }
