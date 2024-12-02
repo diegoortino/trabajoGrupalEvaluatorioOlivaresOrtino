@@ -16,11 +16,7 @@ export abstract class Tragamonedas extends Juego {
     }
 
     abstract jugar(apuesta: number): number;
-    abstract apostarTodo(saldo: number): number;
     abstract verResultado():boolean;
     abstract calcularResultado(apuesta:number):number;
     abstract mensajeResultado(resultado: number, parametroAdicional?: any): string 
-
-     
-
 }

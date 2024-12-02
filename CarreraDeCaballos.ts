@@ -31,11 +31,6 @@ export class CarreraDeCaballos extends Juego {
             return 0;
         }
     }
-    
-
-    apostarTodo(saldo: number, caballoElegido: number): number {
-        return this.jugar(saldo, caballoElegido);
-    }
 
     verResultado(): boolean {
         return this.esGanador

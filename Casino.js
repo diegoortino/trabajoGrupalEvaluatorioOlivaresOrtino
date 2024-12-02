@@ -106,28 +106,7 @@ var Casino = /** @class */ (function () {
             }
         }
         else {
-            return "a";
-        }
-    };
-    Casino.prototype.jugarApostandoTodo = function (jugador, numeroDeJuego, fichas, parametroAdicional) {
-        if (numeroDeJuego >= 0 && numeroDeJuego < this.juegos.length) {
-            if (jugador.getFichas() >= fichas && fichas > 0) {
-                var juegoSeleccionado = this.juegos[numeroDeJuego];
-                var resultado = juegoSeleccionado.jugar(fichas, parametroAdicional);
-                if (resultado == 0) {
-                    return juegoSeleccionado.mensajeResultado(resultado, parametroAdicional);
-                }
-                else {
-                    this.modificarFichas(jugador, resultado);
-                    return juegoSeleccionado.mensajeResultado(resultado, parametroAdicional);
-                }
-            }
-            else {
-                return "No tenes suficientes fichas";
-            }
-        }
-        else {
-            return "a";
+            return "Revisar errores: este mensaje no deberia retornarnse";
         }
     };
     Casino.instance = null;

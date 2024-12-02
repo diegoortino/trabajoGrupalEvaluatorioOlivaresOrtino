@@ -45,9 +45,6 @@ var CarreraDeCaballos = /** @class */ (function (_super) {
             return 0;
         }
     };
-    CarreraDeCaballos.prototype.apostarTodo = function (saldo, caballoElegido) {
-        return this.jugar(saldo, caballoElegido);
-    };
     CarreraDeCaballos.prototype.verResultado = function () {
         return this.esGanador;
     };
