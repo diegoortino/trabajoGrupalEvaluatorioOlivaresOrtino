@@ -25,9 +25,6 @@ export class Ruleta extends Juego {
             return 0;
         }
     }
-    apostarTodo(saldo: number, numeroElegido: number): number {
-        return this.jugar(saldo, numeroElegido)
-    }
     verResultado(): boolean {
         return this.esGanador
     }
