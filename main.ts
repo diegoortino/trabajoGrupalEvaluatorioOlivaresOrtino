@@ -313,10 +313,16 @@ function menuPrincipal() {
                 const fichasAVender = validarVariables(opcion);
                 CasinoMain.cobrarLaCaja(jugadorActual,fichasAVender);
                 console.clear();
-                console.log();
-                console.log("Operacion Realizada");
-                registrarActividad("El jugador "+ jugadorActual.getNombre() + " vendio "+ fichasAVender + " fichas");
-                menuPrincipal();
+                if(CasinoMain.cobrarLaCaja(jugadorActual,fichasAVender)){
+                    console.log("Fichas vendidas exitosamente!");
+                    console.log();
+                    registrarActividad("El jugador "+ jugadorActual.getNombre() + " compró "+ fichasAVender + " fichas");
+                    menuPrincipal();
+                }else{
+                    console.log("Ingrese un numero valido.");
+                    console.log();
+                    menuPrincipal();
+                }
                 break;
             case 4:
                 registrarActividad("El jugador "+jugadorActual.getNombre() +" se retiro del casino con " + jugadorActual.getFichas() + " fichas y con " + jugadorActual.getDinero() + " dolares");
