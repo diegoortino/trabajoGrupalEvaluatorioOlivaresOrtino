@@ -117,8 +117,13 @@ export class Casino implements ICasino{
                 this.modificarFichas(jugador, resultado);
                 return juegoSeleccionado.mensajeResultado(resultado ,parametroAdicional);
             }
-        } else { return "No tenes suficientes fichas"
-            }
+        } else if(isNaN(apuesta)) {
+            
+            return "La valor ingresado no es un numero"
+
+        } else { 
+            return "No tenes suficientes fichas"
+        }
     } else{
         return "Revisar errores: este mensaje no deberia retornarnse"
     } 

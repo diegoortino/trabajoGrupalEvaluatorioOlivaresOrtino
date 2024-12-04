@@ -105,6 +105,9 @@ var Casino = /** @class */ (function () {
                     return juegoSeleccionado.mensajeResultado(resultado, parametroAdicional);
                 }
             }
+            else if (isNaN(apuesta)) {
+                return "La valor ingresado no es un numero";
+            }
             else {
                 return "No tenes suficientes fichas";
             }
