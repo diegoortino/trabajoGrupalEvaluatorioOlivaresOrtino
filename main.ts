@@ -209,7 +209,7 @@ function registrarse() {
             continue; // Volver a pedir el nombre
         }
             
-        const edad = readlineSync.question("Edad: ");
+        const edad = readlineSync.questionInt("Edad: ");
 
         registrado = CasinoMain.agregarJugador(new Jugador(nombre, edad));
 
