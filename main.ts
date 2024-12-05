@@ -74,7 +74,7 @@ function jugarJuego(jugadorActual: Jugador, juegoElegido: number) {
             Elige un numero para apostar y buena suerte. 🍀
             ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             `,
-            preguntaParametroOpcional: `Cual es el número al que desea apostar? Ingrese: `
+            preguntaParametroOpcional: `Cual es el numero al que desea apostar? Ingrese: `
         },
 
         { 
@@ -108,7 +108,7 @@ function jugarJuego(jugadorActual: Jugador, juegoElegido: number) {
         console.log("3. Volver al menú de juegos");
         console.log("4. Volver al menú principal");
 
-        opcion = readlineSync.questionInt("Ingrese: ");
+        opcion = parseInt(readlineSync.question("Ingrese: "));
         console.clear();
         switch (opcion) {
             case 1:
@@ -119,6 +119,7 @@ function jugarJuego(jugadorActual: Jugador, juegoElegido: number) {
                     if (juegoEncontrado.preguntaParametroOpcional) {
                         mensajeCentrado(juegoEncontrado.mensajeDelJuego);
                         const parametroOpcional: number = parseInt(readlineSync.question(juegoEncontrado.preguntaParametroOpcional));
+                        console.clear();
                         mensajeCentrado(CasinoMain.jugarJuego(jugadorActual, juegoEncontrado.numeroDeJuego, apuesta, parametroOpcional));
                         readlineSync.question("Pulse enter para continuar...")
                     }
@@ -134,6 +135,7 @@ function jugarJuego(jugadorActual: Jugador, juegoElegido: number) {
                 if (juegoElegido === 2 || juegoElegido === 3) {
                     mensajeCentrado(juegoEncontrado.mensajeDelJuego);
                     const parametroOpcional: number = parseInt(readlineSync.question(juegoEncontrado.preguntaParametroOpcional));
+                    console.clear();
                     mensajeCentrado(CasinoMain.jugarJuego(jugadorActual, juegoEncontrado.numeroDeJuego, jugadorActual.getFichas(), parametroOpcional));
                     readlineSync.question("Pulse enter para continuar...")
                 } else {
@@ -151,8 +153,8 @@ function jugarJuego(jugadorActual: Jugador, juegoElegido: number) {
                 menuPrincipal();
                 break;
             default:
-                console.log("Opción inválida");
-                menuJuegos();
+                mensajeError("Opción inválida");
+                jugarJuego(jugadorActual, juegoElegido)
                 break;
         }
     } else {
@@ -199,17 +201,27 @@ function registrarse() {
     let registrado: boolean = false;
 
     while (!registrado) {
-        const nombre = readlineSync.question('Nombre: ');
+        const nombre: string = readlineSync.question('Nombre: ');
 
-        // Validar que el nombre solo contenga letras y espacios
         const nombreValido = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(nombre);
         if (!nombreValido) {
             console.clear();
             console.log("El nombre ingresado no es válido. Solo se permiten letras y espacios.");
-            continue; // Volver a pedir el nombre
+            continue;
         }
             
-        const edad = readlineSync.questionInt("Edad: ");
+        let edad: number = 0;
+        let edadValida: boolean = false;
+        while (!edadValida) {
+            const input = readlineSync.question("Edad: ");
+            edad = parseInt(input);
+            if (isNaN(edad)) {
+                console.clear()
+                mensajeError("La edad ingresada no es válida. Debe ser un número.");
+            } else {
+                edadValida = true;
+            }
+        }
 
         registrado = CasinoMain.agregarJugador(new Jugador(nombre, edad));
 
@@ -263,7 +275,7 @@ function menuPrincipal() {
         console.log("3. Cambiar fichas por dinero");
         console.log("4. Salir");
         
-        const opcion = readlineSync.questionInt("Ingrese: ");
+        const opcion = parseInt(readlineSync.question("Ingrese: "));
         switch (opcion) {
             case 1:
                 console.clear();
@@ -306,7 +318,7 @@ function menuPrincipal() {
                 break;
             default:
                 console.clear();
-                console.log("Opción inválida. Seleccione nuevamente");
+                mensajeError("Opción inválida. Seleccione nuevamente");
                 menuPrincipal();
                 break;
         }
@@ -325,7 +337,7 @@ function menuJuegos() {
     console.log("3. Carrera de Caballos");
     console.log("4. Volver al menú principal");
 
-    const opcion = readlineSync.questionInt("Ingrese: ");
+    const opcion = parseInt(readlineSync.question("Ingrese: "));
     switch (opcion) {
         case 1:
             console.clear();
@@ -335,7 +347,7 @@ function menuJuegos() {
             console.log("2. Fortuna de Diamantes");
             console.log("3. Volver al menú de Juegos");
 
-            const subOpcion = readlineSync.questionInt("Ingrese: ");
+            const subOpcion = parseInt(readlineSync.question("Ingrese: "));
             switch (subOpcion) {
                 case 1:
                     console.clear();
@@ -351,7 +363,7 @@ function menuJuegos() {
                     break;
                 default:
                     console.clear();
-                    console.log("Opción inválida. Seleccione nuevamente");
+                    mensajeError("Opción inválida. Seleccione nuevamente");
                     menuJuegos();
                     break;
             }
@@ -374,7 +386,7 @@ function menuJuegos() {
 
         default:
             console.clear();
-            console.log("Opción inválida. Seleccione nuevamente");
+            mensajeError("Opción inválida. Seleccione nuevamente");
             menuJuegos();
             break;
     }
