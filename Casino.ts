@@ -40,15 +40,6 @@ export class Casino implements ICasino{
         };
     }
 
-    verMayoriaEdad(jugador:Jugador): boolean {
-        if (jugador.getEdad() >= 18) {
-            return true
-        } else {
-            return false
-        }
-    }
-
-
     cambiarDineroPorFichas (jugador:Jugador, valor:number): boolean {    
         let dineroDelJugador: number = jugador.getDinero();
         let fichasDelJugador: number = jugador.getFichas();
@@ -91,6 +82,14 @@ export class Casino implements ICasino{
             return true;
         } else {
             return false;
+        }
+    }
+
+    verMayoriaEdad(jugador:Jugador): boolean {
+        if (jugador.getEdad() >= 18) {
+            return true
+        } else {
+            return false
         }
     }
 

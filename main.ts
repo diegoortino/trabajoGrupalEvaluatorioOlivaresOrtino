@@ -6,7 +6,6 @@ import { Ruleta } from "./Ruleta";
 import { Variacion1 } from "./Variacion1";
 import { Variacion2 } from "./Variacion2";
 import { CarreraDeCaballos } from "./CarreraDeCaballos";
-import { Juego } from "./Juego";
 
 let CasinoMain = new Casino("Lucky 38 de New Vegas");
 let jugadorActual: Jugador | null = null;
@@ -194,10 +193,6 @@ function menuInicial() {
             menuInicial();
             break;
         }
-    
-    
-
-
 }
     
 function registrarse() {
@@ -213,28 +208,8 @@ function registrarse() {
             console.log("El nombre ingresado no es válido. Solo se permiten letras y espacios.");
             continue; // Volver a pedir el nombre
         }
-
-        let edad: number = 0;
-        let edadValida = false;
-
-        while (!edadValida) {
             
-            const input = readlineSync.question("Edad: ");
-
-            // Validar que sea un número entero mayor o igual a 18
-            edad = parseInt(input);
-
-            if (isNaN(edad)) {
-                console.clear()
-                console.log("La edad ingresada no es válida. Debe ser un número.");
-            } else if (edad < 18) {
-                console.clear()
-                console.log("Solo las personas mayores de 18 años pueden registrarse.");
-            } else {
-                console.clear()
-                edadValida = true;
-            }
-        }
+        const edad = readlineSync.question("Edad: ");
 
         registrado = CasinoMain.agregarJugador(new Jugador(nombre, edad));
 
@@ -245,8 +220,9 @@ function registrarse() {
             registrarActividad("Un nuevo jugador se ha registrado en el casino: " + nombre + ", Edad: " + edad + " años.");
             menuPrincipal();
         } else {
-            console.log("Registro fallido. Solo las personas con mayoría de edad pueden apostar.");
+            mensajeError("Registro fallido. Solo las personas con mayoría de edad pueden apostar.");
             console.log();
+            menuInicial();
         }
     }
 }

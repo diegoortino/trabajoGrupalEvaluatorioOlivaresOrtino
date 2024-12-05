@@ -9,10 +9,6 @@ export class CarreraDeCaballos extends Juego {
         super("Carrera de Caballos", false)
     }
 
-    listarCaballos(): string {
-        return this.caballos.join("\n");
-    }
-
     jugar(apuesta: number, caballoElegido: number): number {
         const indiceCaballoElegido = caballoElegido - 1;
     

@@ -2,7 +2,6 @@ import { Tragamonedas } from "./Tragamonedas";
 
 export class Variacion1 extends Tragamonedas {
  
-    
     constructor() {
         super("Fiesta Frutal",true, "V1", 10, "Madera");
     }
@@ -10,7 +9,6 @@ export class Variacion1 extends Tragamonedas {
     verResultado(): boolean {
         return this.esGanador;
     }
-
 
     jugar(apuesta: number): number {
 
@@ -21,7 +19,6 @@ export class Variacion1 extends Tragamonedas {
             rodillos[Math.floor(Math.random() * rodillos.length)]
         ];
         
-
         const combinacionGanadora = this.resultadoRodillos.every(symbol => symbol === '🍒') || 
                                     this.resultadoRodillos.every(symbol => symbol === '🍋') || 
                                     this.resultadoRodillos.every(symbol => symbol === '🍊');
@@ -50,7 +47,6 @@ export class Variacion1 extends Tragamonedas {
         }
         return 0;
     }
-
 
     mensajeResultado(apuesta: number): string {
         if (this.esGanador) {
