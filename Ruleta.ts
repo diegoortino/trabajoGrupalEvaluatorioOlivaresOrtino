@@ -25,9 +25,6 @@ export class Ruleta extends Juego {
             return 0;
         }
     }
-    apostarTodo(saldo: number, numeroElegido: number): number {
-        return this.jugar(saldo, numeroElegido)
-    }
     verResultado(): boolean {
         return this.esGanador
     }
@@ -35,7 +32,7 @@ export class Ruleta extends Juego {
         if(this.esGanador === false) {
             return -apuesta;
         }else {
-            return apuesta * 37;
+            return apuesta * 38;
         }
     }
     mensajeResultado(resultado: number, numeroElegido: number): string {

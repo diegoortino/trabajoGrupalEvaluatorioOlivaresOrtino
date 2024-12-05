@@ -9,7 +9,6 @@ export abstract class Juego{
     }
 
     abstract jugar(apuesta: number, parametroAdicional?: any): number;
-    abstract apostarTodo(saldo: number, parametroAdicional?: any): number;
     abstract verResultado():boolean;
     abstract calcularResultado(apuesta:number):number;
     abstract mensajeResultado(resultado:number, parametroAdicional?: any):string;

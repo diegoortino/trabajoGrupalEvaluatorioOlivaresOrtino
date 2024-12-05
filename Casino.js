@@ -35,14 +35,6 @@ var Casino = /** @class */ (function () {
         }
         ;
     };
-    Casino.prototype.verMayoriaEdad = function (jugador) {
-        if (jugador.getEdad() >= 18) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    };
     Casino.prototype.cambiarDineroPorFichas = function (jugador, valor) {
         var dineroDelJugador = jugador.getDinero();
         var fichasDelJugador = jugador.getFichas();
@@ -51,10 +43,12 @@ var Casino = /** @class */ (function () {
             fichasDelJugador += valor;
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return true;
         }
         else {
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return false;
         }
     };
     Casino.prototype.cobrarLaCaja = function (jugador, valor) {
@@ -65,15 +59,25 @@ var Casino = /** @class */ (function () {
             fichasDelJugador -= valor;
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return true;
         }
         else {
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return false;
         }
     };
     Casino.prototype.agregarJugador = function (jugador) {
         if (this.verMayoriaEdad(jugador)) {
             this.jugadores.push(jugador);
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+    Casino.prototype.verMayoriaEdad = function (jugador) {
+        if (jugador.getEdad() >= 18) {
             return true;
         }
         else {
@@ -101,33 +105,15 @@ var Casino = /** @class */ (function () {
                     return juegoSeleccionado.mensajeResultado(resultado, parametroAdicional);
                 }
             }
-            else {
-                return "No tenes suficientes fichas";
-            }
-        }
-        else {
-            return "a";
-        }
-    };
-    Casino.prototype.jugarApostandoTodo = function (jugador, numeroDeJuego, fichas, parametroAdicional) {
-        if (numeroDeJuego >= 0 && numeroDeJuego < this.juegos.length) {
-            if (jugador.getFichas() >= fichas && fichas > 0) {
-                var juegoSeleccionado = this.juegos[numeroDeJuego];
-                var resultado = juegoSeleccionado.jugar(fichas, parametroAdicional);
-                if (resultado == 0) {
-                    return juegoSeleccionado.mensajeResultado(resultado, parametroAdicional);
-                }
-                else {
-                    this.modificarFichas(jugador, resultado);
-                    return juegoSeleccionado.mensajeResultado(resultado, parametroAdicional);
-                }
+            else if (isNaN(apuesta)) {
+                return "La valor ingresado no es un numero";
             }
             else {
                 return "No tenes suficientes fichas";
             }
         }
         else {
-            return "a";
+            return "Revisar errores: este mensaje no deberia retornarnse";
         }
     };
     Casino.instance = null;

@@ -40,41 +40,39 @@ export class Casino implements ICasino{
         };
     }
 
-    verMayoriaEdad(jugador:Jugador): boolean {
-        if (jugador.getEdad() >= 18) {
-            return true
-        } else {
-            return false
-        }
-    }
-
-    cambiarDineroPorFichas (jugador:Jugador, valor:number): void {    
+    cambiarDineroPorFichas (jugador:Jugador, valor:number): boolean {    
         let dineroDelJugador: number = jugador.getDinero();
         let fichasDelJugador: number = jugador.getFichas();
+        
 
         if (valor > 0 && dineroDelJugador >= valor) {
             dineroDelJugador -= valor;
             fichasDelJugador += valor;
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return true;
         } else {
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
-        }
+            return false;
+        }      
     }
 
-    cobrarLaCaja (jugador:Jugador, valor:number) : void  {
+    cobrarLaCaja (jugador:Jugador, valor:number) : boolean  {
         let dineroDelJugador: number = jugador.getDinero();
         let fichasDelJugador: number = jugador.getFichas();
+        
 
         if (valor > 0 && fichasDelJugador >= valor) {
             dineroDelJugador += valor;
             fichasDelJugador -= valor;
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return true;
         } else {
             jugador.setDinero(dineroDelJugador);
             jugador.setFichas(fichasDelJugador);
+            return false;
         }
     }
 
@@ -84,6 +82,14 @@ export class Casino implements ICasino{
             return true;
         } else {
             return false;
+        }
+    }
+
+    verMayoriaEdad(jugador:Jugador): boolean {
+        if (jugador.getEdad() >= 18) {
+            return true
+        } else {
+            return false
         }
     }
 
@@ -110,28 +116,15 @@ export class Casino implements ICasino{
                 this.modificarFichas(jugador, resultado);
                 return juegoSeleccionado.mensajeResultado(resultado ,parametroAdicional);
             }
-        } else { return "No tenes suficientes fichas"
-            }
-    } else{
-        return "a"
-    } 
-    }
-    
-    jugarApostandoTodo(jugador:Jugador, numeroDeJuego:number,fichas: number, parametroAdicional?: any): string{
-        if (numeroDeJuego >= 0 && numeroDeJuego < this.juegos.length) {
-            if (jugador.getFichas() >= fichas && fichas > 0){
-            const juegoSeleccionado = this.juegos[numeroDeJuego];
-            let resultado = juegoSeleccionado.jugar(fichas, parametroAdicional);
-            if (resultado == 0) {return juegoSeleccionado.mensajeResultado(resultado,parametroAdicional)
+        } else if(isNaN(apuesta)) {
+            
+            return "La valor ingresado no es un numero"
 
-            }else{
-                this.modificarFichas(jugador, resultado);
-                return juegoSeleccionado.mensajeResultado(resultado ,parametroAdicional);
-            }
-        } else { return "No tenes suficientes fichas"
-            }
+        } else { 
+            return "No tenes suficientes fichas"
+        }
     } else{
-        return "a"
+        return "Revisar errores: este mensaje no deberia retornarnse"
     } 
     }
 }

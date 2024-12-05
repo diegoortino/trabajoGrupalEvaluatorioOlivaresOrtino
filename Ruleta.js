@@ -43,9 +43,6 @@ var Ruleta = /** @class */ (function (_super) {
             return 0;
         }
     };
-    Ruleta.prototype.apostarTodo = function (saldo, numeroElegido) {
-        return this.jugar(saldo, numeroElegido);
-    };
     Ruleta.prototype.verResultado = function () {
         return this.esGanador;
     };
@@ -54,7 +51,7 @@ var Ruleta = /** @class */ (function (_super) {
             return -apuesta;
         }
         else {
-            return apuesta * 37;
+            return apuesta * 38;
         }
     };
     Ruleta.prototype.mensajeResultado = function (resultado, numeroElegido) {
