@@ -25,9 +25,6 @@ var CarreraDeCaballos = /** @class */ (function (_super) {
         _this.caballos = ["Caballo 1 - Margarita", "Caballo 2 - Picante", "Caballo 3 - Tormenta", "Caballo 4 - Petiso"];
         return _this;
     }
-    CarreraDeCaballos.prototype.listarCaballos = function () {
-        return this.caballos.join("\n");
-    };
     CarreraDeCaballos.prototype.jugar = function (apuesta, caballoElegido) {
         var indiceCaballoElegido = caballoElegido - 1;
         this.caballoGanador = Math.floor(Math.random() * this.caballos.length);

@@ -35,14 +35,6 @@ var Casino = /** @class */ (function () {
         }
         ;
     };
-    Casino.prototype.verMayoriaEdad = function (jugador) {
-        if (jugador.getEdad() >= 18) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    };
     Casino.prototype.cambiarDineroPorFichas = function (jugador, valor) {
         var dineroDelJugador = jugador.getDinero();
         var fichasDelJugador = jugador.getFichas();
@@ -78,6 +70,14 @@ var Casino = /** @class */ (function () {
     Casino.prototype.agregarJugador = function (jugador) {
         if (this.verMayoriaEdad(jugador)) {
             this.jugadores.push(jugador);
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+    Casino.prototype.verMayoriaEdad = function (jugador) {
+        if (jugador.getEdad() >= 18) {
             return true;
         }
         else {
